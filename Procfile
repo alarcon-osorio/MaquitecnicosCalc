@@ -1,1 +1,1 @@
-web: java - jar target/maquitecnicoscalc.war
+web: java -jar target/maquitecnicoscalc.war
