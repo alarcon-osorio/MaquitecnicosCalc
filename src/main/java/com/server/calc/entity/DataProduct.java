@@ -21,7 +21,7 @@ public class DataProduct {
     private long dataTypeId;
     private String reference;
     private String description;
-    private int valueDollar;
+    private double valueDollar;
     private long amount;
 
 

@@ -21,8 +21,16 @@ public class ServiceDataProduct {
         return repositoryDataProduct.findId(productid);
     }
 
-    public DataProduct getDataProductReference(String reference){
+    public List<DataProduct> getDataProductReferenceList(String reference){
+        return repositoryDataProduct.findByReferenceList(reference);
+    }
+
+    public DataProduct getDataProductByReference(String reference){
         return repositoryDataProduct.findByReference(reference);
+    }
+
+    public DataProduct getDataProductByValueDollar(String reference, long amount){
+        return repositoryDataProduct.findByValueDollar(reference, amount);
     }
 
     public void updateDataProduct(DataProduct dataProduct){

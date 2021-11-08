@@ -51,69 +51,86 @@ public class ControllerCalc {
         model.addAttribute("datacalc", dataCalc);
 
         return "searchProducts";
+
     }
 
     @GetMapping("/detailImport")
     public String detailImportNormalDT(String reference, long importId,  Model model) {
 
-
-        DataProduct dataProduct = serviceDataProduct.getDataProductReference(reference);
-        model.addAttribute("dataproduct", dataProduct);
-
+        List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference);
+        if (dataProductList.size() == 0) {
+            DataStatic dataStatic = serviceDataStatic.getById(importId);
+            model.addAttribute("datastatic", dataStatic);
+            model.addAttribute("reference", reference);
+            String err = "Error en campo por favor validar referencia";
+            model.addAttribute("err", err);
+            return "searchProducts";
+        }
+        model.addAttribute("dataproductlist", dataProductList);
 
         DataStatic dataStatic = serviceDataStatic.getById(importId);
         model.addAttribute("datastatic", dataStatic);
 
-        /*
         DataCalc dataCalc = serviceDataCalc.getByConceptId(importId);
         model.addAttribute("datacalc", dataCalc);
-        */
 
         return "detailImport";
+
     }
 
     @PostMapping("/resultCalc")
     public String resultCalc(@ModelAttribute("dataproduct") DataProduct dataProduct, Model model) {
 
-        DataProduct dataProductData = serviceDataProduct.getDataProduct(dataProduct.getId());
-        dataProductData.setImportId(dataProduct.getImportId());
-        dataProductData.setReference(dataProductData.getReference());
-        dataProductData.setDescription(dataProductData.getDescription());
-        dataProductData.setValueDollar(dataProduct.getValueDollar());
-        serviceDataProduct.updateDataProduct(dataProductData);
-        model.addAttribute("dataproductdata", dataProductData);
+        try{
+            DataProduct dataProductValueDollar = serviceDataProduct.getDataProductByValueDollar(dataProduct.getReference(), dataProduct.getAmount());
 
-        DataCalc dataCalc = serviceDataCalc.getByConceptId(dataProduct.getImportId());
-        dataCalc.setValueCop(dataCalc.getValueCop() * dataProduct.getValueDollar());
-        long legalization = dataCalc.getLegalization();
-        dataCalc.setLegalization((dataCalc.getValueCop() * legalization / 100) + dataCalc.getValueCop());
-        System.out.println(dataCalc);
-        model.addAttribute("datacalc", dataCalc);
+            DataProduct dataProductData = serviceDataProduct.getDataProduct(dataProductValueDollar.getId());
+            model.addAttribute("dataproductdata", dataProductData);
 
-        DataResult dataResult = new DataResult();
-        float VIP = 0.65F;
-        float DISTRIBUTOR = 0.6F;
-        float CONSUMER = 0.5F;
-        float PUBLICS = 0.4F;
-        float calcLegalization = dataCalc.getLegalization();
-        dataResult.setVip(Math.round(calcLegalization / VIP));
-        dataResult.setDistributor(Math.round(calcLegalization / DISTRIBUTOR));
-        dataResult.setConsumer(Math.round(calcLegalization / CONSUMER));
-        dataResult.setPricePublic(Math.round(calcLegalization / PUBLICS));
+            DataStatic dataStatic = serviceDataStatic.getById(dataProduct.getImportId());
+            model.addAttribute("datastatic", dataStatic);
 
-        DataCastResult dataCastResult = new DataCastResult();
-        BigDecimal bdVip = new BigDecimal(dataResult.getVip());
-        BigDecimal bdDist = new BigDecimal(dataResult.getDistributor());
-        BigDecimal bdCon = new BigDecimal(dataResult.getConsumer());
-        BigDecimal bdPub = new BigDecimal(dataResult.getPricePublic());
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
-        dataCastResult.setVipCast(formatter.format(bdVip.longValue()));
-        dataCastResult.setDistributorCast(formatter.format(bdDist.longValue()));
-        dataCastResult.setConsumerCast(formatter.format(bdCon.longValue()));
-        dataCastResult.setPricePublicCast(formatter.format(bdPub.longValue()));
-        model.addAttribute("datacastresult", dataCastResult);
+            DataCalc dataCalc = serviceDataCalc.getByConceptId(dataProduct.getImportId());
+            dataCalc.setValueCop((long) (dataCalc.getValueCop() * dataProductValueDollar.getValueDollar()));
 
-        return "resultCalc";
+            long legalization = dataCalc.getLegalization();
+            dataCalc.setLegalization((dataCalc.getValueCop() * legalization / 100) + dataCalc.getValueCop());
+
+            model.addAttribute("datacalc", dataCalc);
+
+            DataResult dataResult = new DataResult();
+            float VIP = 0.65F;
+            float DISTRIBUTOR = 0.6F;
+            float CONSUMER = 0.5F;
+            float PUBLICS = 0.4F;
+            float calcLegalization = dataCalc.getLegalization();
+
+            dataResult.setVip((((int) Math.ceil(calcLegalization / VIP) + 99) / 100 ) * 100);
+            dataResult.setDistributor((((int) Math.ceil(calcLegalization / DISTRIBUTOR) + 99) / 100 ) * 100);
+            dataResult.setConsumer((((int) Math.ceil(calcLegalization / CONSUMER) + 99) / 100) * 100 );
+            dataResult.setPricePublic((((int) Math.ceil(calcLegalization / PUBLICS) + 99) / 100) * 100 );
+
+            DataCastResult dataCastResult = new DataCastResult();
+            BigDecimal bdVip = new BigDecimal(dataResult.getVip());
+            BigDecimal bdDist = new BigDecimal(dataResult.getDistributor());
+            BigDecimal bdCon = new BigDecimal(dataResult.getConsumer());
+            BigDecimal bdPub = new BigDecimal(dataResult.getPricePublic());
+
+            NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
+            dataCastResult.setVipCast(formatter.format(bdVip.longValue()));
+            dataCastResult.setDistributorCast(formatter.format(bdDist.longValue()));
+            dataCastResult.setConsumerCast(formatter.format(bdCon.longValue()));
+            dataCastResult.setPricePublicCast(formatter.format(bdPub.longValue()));
+
+            model.addAttribute("datacastresult", dataCastResult);
+
+            return "resultCalc";
+
+        }catch (Exception ex){
+            model.addAttribute("error", ex);
+            return "errorsTemplate";
+        }
+
     }
 
 }

@@ -1,23 +1,6 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Calculadora MT</title>
-</head>
-
-<!-- As a link -->
-<nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" th:href=@{/calc}>
-        <img th:src="@{img/logo.png}" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-        Calculadora de Importaciones
-    </a>
-</nav>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
 
 <div class="container mt-4 vj-destacados">
     <div class="row">
@@ -30,11 +13,15 @@
             <h1 th:object="${datastatic}" th:text="'Calcular Valores: ' + *{concept}"></h1>
             <form th:action="@{/detailImport}" method="get">
                 <div class="form-group">
-                    <input th:object="${datastatic}" type="" class="form-control" id="importId" name="importId" th:value="*{id}">
+                    <input th:object="${datastatic}" type="hidden" class="form-control" id="importId" name="importId" th:value="*{id}">
                 </div>
                 <div class="form-group">
-                    <label for="reference">Buscar Referencia</label>
-                    <input type="text" class="form-control" id="reference" name="reference" placeholder="Buscar producto">
+                    <label th:object="${datastatic}" for="reference" th:with="concept = *{concept}" th:text="'Buscar solo por referencia - ' + ${#strings.substringAfter(concept, '-')}"></label>
+                    <input type="text" class="form-control" id="reference" name="reference" placeholder="Buscar producto" >
+                    <br>
+                    <div th:if="${err}" class="alert alert-danger" role="alert">
+                        No se encuentra serial o numero de parte por favor verifica nuevamente
+                    </div>
                 </div>
                 <center>
                     <button type="submit" class="btn btn-primary">Buscar</button>
@@ -43,20 +30,5 @@
         </div>
     </div>
 </div>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-</body>
-<!-- Footer -->
-<footer class="page-footer font-small blue">
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a th:href=@{"https://github.com/alarcon-osorio"}> @github.com/alarcon-osorio</a>
-    </div>
-    <!-- Copyright -->
-</footer>
-<!-- Footer -->
+<footer th:insert="includes/footer :: footer"> </footer>
 </html>
