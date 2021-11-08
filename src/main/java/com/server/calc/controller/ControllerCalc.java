@@ -82,6 +82,9 @@ public class ControllerCalc {
     public String resultCalc(@ModelAttribute("dataproduct") DataProduct dataProduct, Model model) {
 
         try{
+            DataCastResult dataCastResult = new DataCastResult();
+            NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
+
             DataProduct dataProductValueDollar = serviceDataProduct.getDataProductByValueDollar(dataProduct.getReference(), dataProduct.getAmount());
 
             DataProduct dataProductData = serviceDataProduct.getDataProduct(dataProductValueDollar.getId());
@@ -92,11 +95,16 @@ public class ControllerCalc {
 
             DataCalc dataCalc = serviceDataCalc.getByConceptId(dataProduct.getImportId());
             dataCalc.setValueCop((long) (dataCalc.getValueCop() * dataProductValueDollar.getValueDollar()));
-
             long legalization = dataCalc.getLegalization();
             dataCalc.setLegalization((dataCalc.getValueCop() * legalization / 100) + dataCalc.getValueCop());
 
-            model.addAttribute("datacalc", dataCalc);
+            BigDecimal bdValueCop = new BigDecimal(dataCalc.getValueCop());
+            BigDecimal bdLegalization = new BigDecimal(dataCalc.getLegalization());
+
+            dataCastResult.setValueCopCast(formatter.format(bdValueCop.longValue()));
+            dataCastResult.setLegalizationCast(formatter.format(bdLegalization.longValue()));
+
+            model.addAttribute("datacalc", dataCastResult);
 
             DataResult dataResult = new DataResult();
             float VIP = 0.65F;
@@ -110,13 +118,11 @@ public class ControllerCalc {
             dataResult.setConsumer((((int) Math.ceil(calcLegalization / CONSUMER) + 99) / 100) * 100 );
             dataResult.setPricePublic((((int) Math.ceil(calcLegalization / PUBLICS) + 99) / 100) * 100 );
 
-            DataCastResult dataCastResult = new DataCastResult();
             BigDecimal bdVip = new BigDecimal(dataResult.getVip());
             BigDecimal bdDist = new BigDecimal(dataResult.getDistributor());
             BigDecimal bdCon = new BigDecimal(dataResult.getConsumer());
             BigDecimal bdPub = new BigDecimal(dataResult.getPricePublic());
 
-            NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
             dataCastResult.setVipCast(formatter.format(bdVip.longValue()));
             dataCastResult.setDistributorCast(formatter.format(bdDist.longValue()));
             dataCastResult.setConsumerCast(formatter.format(bdCon.longValue()));

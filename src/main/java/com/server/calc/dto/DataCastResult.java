@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataCastResult {
 
+    private String valueCopCast;
+    private String legalizationCast;
+
     private String vipCast;
     private String distributorCast;
     private String consumerCast;

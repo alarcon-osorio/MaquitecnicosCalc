@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.server.calc.CalcApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.277 s - in com.server.calc.CalcApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.598 s - in com.server.calc.CalcApplicationTests

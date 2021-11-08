@@ -4,15 +4,15 @@
 
 <div class="container mt-4 vj-destacados">
     <div class="row">
-        <div class="col col-md-12 text-right mb-4">
-            <a th:object="${datastatic}" th:href="@{/searchProducts(importId=*{id})}" class="btn btn-outline-success">Buscar otra referencia</a>
+        <div class="col col-md-12 text-right mb-4" >
+            <a th:object="${dataproductdata}"  th:href="@{/detailImport(importId=*{importId}, reference=*{reference})}" class="btn btn-outline-success">Atrás</a>
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
     </div>
     <div class="row" >
         <div class="col-md-12" >
             <center>
-                <h1>Resultado de Calculo</h1>
+                <h1 th:object="${dataproductdata}" th:text="*{amount} > 1 ? 'Resultado de Cálculo para más de ' + *{amount} + ' Unidades' : 'Resultado de Cálculo para ' + *{amount} + ' Unidad'"></h1>
             </center>
             <form method="post">
                 <div class="form-group" th:object="${dataproductdata}">
@@ -23,12 +23,10 @@
                     <input type="hidden" class="form-control" id="value_dollar" th:value="*{valueDollar}" placeholder="Precio en Dolares" disabled="true">
                 </div>
                <div class="form-group" th:object="${datacalc}">
-                    <label for="value_cop">Conversión a pesos</label>
-                    <input type="text" class="form-control" th:value="'$' + *{valueCop}" id="value_cop"  placeholder="Valor en Pesos " disabled="true">
+                    <input type="hidden" class="form-control" th:value="'$' + *{valueCopCast}" id="value_cop"  placeholder="Valor en Pesos " disabled="true">
                 </div>
                 <div class="form-group"  th:object="${datacalc}">
-                    <label for="legalization">Legalización</label>
-                    <input type="text" class="form-control" th:value="'$' + *{legalization}" id="legalization"  placeholder="Legalizacion" disabled="true">
+                    <input type="hidden" class="form-control" th:value="'$' + *{legalizationCast}" id="legalization"  placeholder="Legalizacion" disabled="true">
                 </div>
             </form>
         </div>
