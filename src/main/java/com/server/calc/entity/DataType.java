@@ -10,21 +10,13 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "dataproduct")
-public class DataProduct {
+@Table(name = "datatype")
+public class DataType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private long importId;
-    private long dataTypeId;
-    private String reference;
+    private int id;
+    private String name;
     private String description;
-    private int valueDollar;
-    private long amount;
-
 
 }
-
-

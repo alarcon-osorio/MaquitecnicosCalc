@@ -35,21 +35,39 @@ public class ControllerCalc {
 
     @GetMapping("/calc")
     public String index(Model model){
+
         List<DataStatic> dataStaticList = serviceDataStatic.getAll();
         model.addAttribute("datastatic", dataStaticList);
         return "index";
     }
 
-    @GetMapping("/detailImport")
-    public String detailImportNormalDT(long importId, Model model) {
-        List<DataProduct> dataProductList = serviceDataProduct.getAllDataProduct();
-        model.addAttribute("dataproduct", dataProductList);
+    @GetMapping("/searchProducts")
+    public String searchProduct(long importId, Model model) {
 
         DataStatic dataStatic = serviceDataStatic.getById(importId);
         model.addAttribute("datastatic", dataStatic);
 
         DataCalc dataCalc = serviceDataCalc.getByConceptId(importId);
         model.addAttribute("datacalc", dataCalc);
+
+        return "searchProducts";
+    }
+
+    @GetMapping("/detailImport")
+    public String detailImportNormalDT(String reference, long importId,  Model model) {
+
+
+        DataProduct dataProduct = serviceDataProduct.getDataProductReference(reference);
+        model.addAttribute("dataproduct", dataProduct);
+
+
+        DataStatic dataStatic = serviceDataStatic.getById(importId);
+        model.addAttribute("datastatic", dataStatic);
+
+        /*
+        DataCalc dataCalc = serviceDataCalc.getByConceptId(importId);
+        model.addAttribute("datacalc", dataCalc);
+        */
 
         return "detailImport";
     }

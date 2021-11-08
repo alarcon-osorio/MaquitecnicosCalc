@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
 public interface RepositoryDataProduct extends JpaRepository<DataProduct, Long> {
     @Query(value = "select * from dataproduct d where d.id =?1", nativeQuery = true)
     DataProduct findId(Long id);
+
+    @Query(value = "select * from dataproduct d where d.reference =?1", nativeQuery = true)
+    DataProduct findByReference(String reference);
+
 }

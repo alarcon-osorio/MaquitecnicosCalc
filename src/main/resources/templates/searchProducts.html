@@ -15,7 +15,7 @@
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" th:href=@{/calc}>
         <img th:src="@{img/logo.png}" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-         Calculadora de Importaciones
+        Calculadora de Importaciones
     </a>
 </nav>
 
@@ -28,29 +28,16 @@
     <div class="row">
         <div class="col-md-12" >
             <h1 th:object="${datastatic}" th:text="'Calcular Valores: ' + *{concept}"></h1>
-            <form th:action="@{/resultCalc}" method="post">
+            <form th:action="@{/detailImport}" method="get">
                 <div class="form-group">
                     <input th:object="${datastatic}" type="" class="form-control" id="importId" name="importId" th:value="*{id}">
                 </div>
                 <div class="form-group">
-                    <label for="reference">Número DT</label>
-                    <input th:object="${dataproduct}" type="text" class="form-control" id="reference" name="reference"  th:value="*{reference}" >
+                    <label for="reference">Buscar Referencia</label>
+                    <input type="text" class="form-control" id="reference" name="reference" placeholder="Buscar producto">
                 </div>
-               <div class="form-group">
-                    <label for="description">Descripción</label>
-                    <input th:object="${dataproduct}" type="text" class="form-control" id="description" name="description"  th:value="*{description}" >
-                </div>
-
-                <div class="form-group">
-                    <label for="amount">Referencia</label>
-                    <input th:object="${dataproduct}" type="text" class="form-control" id="amount" name="amount"  th:value="*{amount}" >
-                </div>
-                <!--<div class="form-group">
-                    <label for="valueDollar">Precio en Dolares</label>
-                    <input th:each="Item : ${dataproduct}" th:value="${Item.value_dollar}" type="number" class="form-control" id="valueDollar" name="valueDollar" value="0" placeholder="Precio en Dolares" required="true">
-                </div>-->
                 <center>
-                    <button type="submit" class="btn btn-primary">Calcular</button>
+                    <button type="submit" class="btn btn-primary">Buscar</button>
                 </center>
             </form>
         </div>
