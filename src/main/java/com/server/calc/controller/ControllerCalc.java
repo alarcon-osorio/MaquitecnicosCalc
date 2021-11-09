@@ -58,6 +58,10 @@ public class ControllerCalc {
     public String detailImportNormalDT(String reference, long importId,  Model model) {
 
         List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference);
+        System.out.println("dataProductList" + dataProductList);
+
+        //TODO: EN EL REPOSITORIO SE PUEDE HACER LA CONSULTA
+
         if (dataProductList.size() == 0) {
             DataStatic dataStatic = serviceDataStatic.getById(importId);
             model.addAttribute("datastatic", dataStatic);
