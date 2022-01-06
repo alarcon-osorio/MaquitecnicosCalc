@@ -8,8 +8,16 @@
             <a th:href="@{/calc}" class="btn btn-outline-success">Iniciar Sesion</a>
         </div>
         <div class="col col-md-12 text-right mb-4" sec:authorize="isAuthenticated()">
-            <a th:href="@{/calc}" class="btn btn-outline-info">Home</a>
-            <a th:href="@{/logout}" class="btn btn-outline-warning">Cerrar Sesion</a>
+            <div>
+                <a class="font-weight-bold" th:text="'Bienvenido: ' + ${profile.get('name')}"></a>
+                <img th:src="${profile.get('picture')}" width="45" height="45" class="d-inline-block align-top rounded-circle" alt="" loading="lazy">
+                <p class="owner-subtext" th:text="${profile.get('email')}"></p>
+            </div>
+            <br>
+            <div>
+                <a th:href="@{/calc}" class="btn btn-outline-info">Home</a>
+                <a th:href="@{/logout}" class="btn btn-outline-warning">Cerrar Sesión</a>
+            </div>
         </div>
     </div>
     <div class="row">
