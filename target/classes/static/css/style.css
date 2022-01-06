@@ -6,3 +6,8 @@
 .badge {
     font-size: 150%;
 }
+
+.owner-subtext {
+    margin-right: 13mm;
+    margin-top: -28px;
+}

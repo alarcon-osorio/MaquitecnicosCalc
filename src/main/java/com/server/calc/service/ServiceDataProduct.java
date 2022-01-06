@@ -21,16 +21,16 @@ public class ServiceDataProduct {
         return repositoryDataProduct.findId(productid);
     }
 
-    public List<DataProduct> getDataProductReferenceList(String reference){
-        return repositoryDataProduct.findByReferenceList(reference);
+    public List<DataProduct> getDataProductReferenceList(String reference, long importId){
+        return repositoryDataProduct.findByReferenceList(reference, importId);
     }
 
     public DataProduct getDataProductByReference(String reference){
         return repositoryDataProduct.findByReference(reference);
     }
 
-    public DataProduct getDataProductByValueDollar(String reference, long amount){
-        return repositoryDataProduct.findByValueDollar(reference, amount);
+    public List<DataProduct> getListDataProductByValueDollar(String reference, long amount){
+        return repositoryDataProduct.findListByValueDollar(reference, amount);
     }
 
     public void updateDataProduct(DataProduct dataProduct){

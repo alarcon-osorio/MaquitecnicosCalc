@@ -23,6 +23,6 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .and().oauth2Login()
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .addLogoutHandler(logoutHandler);;
+                .addLogoutHandler(logoutHandler);
     }
 }
