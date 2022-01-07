@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label for="amount">Cantidad Minima</label>
                     <select class="form-control" id="amount" name="amount">
-                        <option th:each="Item: ${dataproductlist}" type="text" class="form-control" th:value="${Item.amount}" th:text="${Item.amount} > 1 ? 'Más de ' +  ${Item.amount} : ${Item.amount}" ></option>
+                       <option th:each="Item: ${dataproductlist}" type="text" class="form-control" th:value="${Item.amount}" th:text="${Item.amount} > 1 ? 'Más de ' +  ${Item.amount} : ${Item.amount}" ></option>
                     </select>
                 </div>
                 <center>

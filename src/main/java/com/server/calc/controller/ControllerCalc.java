@@ -5,11 +5,9 @@ import com.server.calc.dto.DataResult;
 import com.server.calc.entity.DataCalc;
 import com.server.calc.entity.DataProduct;
 import com.server.calc.entity.DataStatic;
-import com.server.calc.entity.DataType;
 import com.server.calc.service.ServiceDataCalc;
 import com.server.calc.service.ServiceDataProduct;
 import com.server.calc.service.ServiceDataStatic;
-import com.server.calc.service.ServiceDataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
@@ -37,9 +34,6 @@ public class ControllerCalc {
 
     @Autowired
     ServiceDataProduct serviceDataProduct;
-
-    @Autowired
-    ServiceDataType serviceDataType;
 
     @GetMapping("/calc")
     public String index(Model model, @AuthenticationPrincipal OidcUser principal){
