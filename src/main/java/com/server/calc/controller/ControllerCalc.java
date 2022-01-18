@@ -5,9 +5,11 @@ import com.server.calc.dto.DataResult;
 import com.server.calc.entity.DataCalc;
 import com.server.calc.entity.DataProduct;
 import com.server.calc.entity.DataStatic;
+import com.server.calc.entity.DataUsers;
 import com.server.calc.service.ServiceDataCalc;
 import com.server.calc.service.ServiceDataProduct;
 import com.server.calc.service.ServiceDataStatic;
+import com.server.calc.service.ServiceDataUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -35,9 +37,20 @@ public class ControllerCalc {
     @Autowired
     ServiceDataProduct serviceDataProduct;
 
+    @Autowired
+    ServiceDataUsers serviceDataUsers;
+
     @GetMapping("/calc")
     public String index(Model model, @AuthenticationPrincipal OidcUser principal){
         if (principal != null) {
+            try{
+                DataUsers dataUsers = serviceDataUsers.geyByEmail(principal.getEmail());
+                if (dataUsers.getProfile().equals("admin")){
+                    model.addAttribute("admin", dataUsers.getProfile());
+                }
+            }catch (NullPointerException ex){
+                model.addAttribute("profile", principal.getClaims());
+            }
             model.addAttribute("profile", principal.getClaims());
         }
 
@@ -62,8 +75,8 @@ public class ControllerCalc {
     @GetMapping("/detailImport")
     public String detailImportNormalDT(String reference, long importId,  Model model) {
 
-        if (importId == 1) {
-            List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference, importId);
+        if (importId == 1 || importId == 3) {
+            List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference, 1);
             if (dataProductList.isEmpty()) {
                 DataStatic dataStatic = serviceDataStatic.getById(importId);
                 model.addAttribute("datastatic", dataStatic);

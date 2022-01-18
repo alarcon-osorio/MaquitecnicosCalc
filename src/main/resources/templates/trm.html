@@ -1,0 +1,37 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+            <a th:href="@{/admin}" class="btn btn-outline-success">Atrás</a>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tipo de Importación</th>
+                <th scope="col">Valor TRM</th>
+                <th scope="col">Legalización</th>
+                <th scope="col">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="trmList : ${trmList}">
+                <th scope="row" th:text="${trmList.id}"></th>
+                <td th:text="${trmList.idDataStatic}"></td>
+                <td th:text="'$' + ${trmList.valueCop}"></td>
+                <td th:text="${trmList.legalization} + '%'"></td>
+                <td><a href="#" th:text="Actualizar" class="btn btn-success"></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>

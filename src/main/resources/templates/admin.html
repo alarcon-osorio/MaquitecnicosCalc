@@ -14,25 +14,41 @@
                 <p class="owner-subtext" th:text="${profile.get('email')}"></p>
             </div>
             <div>
-                <a th:if="${admin == 'admin'}" th:href="@{/admin}" class="btn btn-outline-success">Admin</a>
                 <a th:href="@{/calc}" class="btn btn-outline-info">Home</a>
                 <a th:href="@{/logout}" class="btn btn-outline-warning">Cerrar Sesión</a>
             </div>
         </div>
     </div>
     <div class="row">
-        <div th:each="datastat : ${datastatic}" class="col-md-3  mb-4">
+        <div>
+            <h4><span style="font-weight: bold;"> Bienvenido Administrador:</span> En este módulo puedes cambiar la información de la calculadora</h4>
+        </div>
+        <br><br>
+        <div class="col-md-3  mb-4">
             <div class="card">
-               <img th:src="${datastat.urlImagen}" class="card-img-top" alt="...">
+                <img src="https://cdn.dolarhoy.co/trm/avatar.png" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 th:text="${datastat.concept}" class="card-title"></h5>
+                    <h5 class="card-title" th:text="'Módulo TRM $' + ${trm}"></h5>
                 </div>
                 <div class="card-footer text-muted">
-                    <a th:href="@{/searchProducts(importId=${datastat.id})}" class="btn btn-primary">Calcular Valores</a>
+                    <center><a th:href="@{/trm}" class="btn btn-success">Ingresar</a></center>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3  mb-4">
+            <div class="card">
+                <img src="https://static.wixstatic.com/media/dd88b4_57fae4203a4a4fda9fef44815e7c7281~mv2.png/v1/fill/w_282,h_280,al_c,q_85,usm_0.66_1.00_0.01/DIETER%20CORONA.webp" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Módulo de productos</h5>
+                </div>
+                <div class="card-footer text-muted">
+                    <center><a th:href="@{/adminProducts}" class="btn btn-success">Ingresar</a></center>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 <footer th:insert="includes/footer :: footer"> </footer>
 </html>

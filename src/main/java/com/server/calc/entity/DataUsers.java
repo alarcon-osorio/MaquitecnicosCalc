@@ -10,17 +10,16 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "datacalc")
-public class DataCalc {
+@Table(name = "datatype")
+public class DataUsers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name ="iddatastatic")
-    private long idDataStatic;
-
-    private long valueCop;
-    private long legalization;
+    private String name;
+    private String email;
+    private String login;
+    private String password;
+    private String profile;
 
 }

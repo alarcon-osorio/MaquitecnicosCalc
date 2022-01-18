@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface RepositoryDataCalc extends JpaRepository<DataCalc, Long> {
     @Query(value = "select * from datacalc d where d.iddatastatic = ?1", nativeQuery = true)
     DataCalc findBydDataStaticId(long id);
+
 }
+
+
