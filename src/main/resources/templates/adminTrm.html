@@ -5,8 +5,9 @@
 <div class="container mt-4 vj-destacados">
     <div class="row">
         <div class="col col-md-12 text-right mb-4">
+            <a th:href="@{/newTrm}" class="btn btn-outline-success">Agregar</a>
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
-            <a th:href="@{/admin}" class="btn btn-outline-success">Atrás</a>
+            <a th:href="@{/admin}" class="btn btn-outline-danger">Atrás</a>
         </div>
     </div>
     <div class="row">
@@ -23,10 +24,17 @@
             <tbody>
             <tr th:each="trmList : ${trmList}">
                 <th scope="row" th:text="${trmList.id}"></th>
-                <td th:text="${trmList.idDataStatic}"></td>
+                <td th:text="${trmList.concept}"></td>
                 <td th:text="'$' + ${trmList.valueCop}"></td>
                 <td th:text="${trmList.legalization} + '%'"></td>
-                <td><a href="#" th:text="Actualizar" class="btn btn-success"></a></td>
+                <td>
+                    <center>
+                        <a href="#" th:text="Editar" class="btn btn-success"></a>
+                        ||
+                        <a href="#" th:text="Eliminar" class="btn btn-danger"></a>
+                    </center>
+
+                </td>
             </tr>
             </tbody>
         </table>

@@ -2,11 +2,10 @@ package com.server.calc.controller;
 
 import com.server.calc.dto.DataCalcJoin;
 import com.server.calc.entity.DataCalc;
-import com.server.calc.entity.DataStatic;
+import com.server.calc.entity.DataProduct;
 import com.server.calc.entity.DataUsers;
-import com.server.calc.service.ServiceDataCalc;
-import com.server.calc.service.ServiceDataStatic;
-import com.server.calc.service.ServiceDataUsers;
+import com.server.calc.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class ControllerAdmin {
 
@@ -28,6 +27,12 @@ public class ControllerAdmin {
 
     @Autowired
     ServiceDataStatic serviceDataStatic;
+
+    @Autowired
+    ServiceDataCalcJoin serviceDataCalcJoin;
+
+    @Autowired
+    ServiceDataProduct serviceDataProduct;
 
     @GetMapping("/admin")
     public String admin(Model model, @AuthenticationPrincipal OidcUser principal) {
@@ -56,10 +61,26 @@ public class ControllerAdmin {
 
     @GetMapping("/trm")
     public String trm(Model model){
-        List<DataCalc> trmList = serviceDataCalc.getAll();
-        List<DataStatic> typeList = serviceDataStatic.getAll();
+        List<DataCalcJoin> trmList = serviceDataCalcJoin.getDataCalcJoinList();
+        log.info("Lista: " + trmList);
         model.addAttribute("trmList", trmList);
-        return "trm";
+        return "adminTrm";
+    }
+
+    @GetMapping("/adminProducts")
+    public String adminProducts(Model model){
+        List<DataProduct> productList = serviceDataProduct.getAllDataProduct();
+        log.info("Lista de Productos: " + productList);
+        model.addAttribute("productList", productList);
+        return "adminProducts";
+    }
+
+    @GetMapping("/dataUsers")
+    public String dataUsers(Model model){
+        List<DataUsers> dataUsersList = serviceDataUsers.getAllUsers();
+        log.info("Lista de Usuarios: " + dataUsersList);
+        model.addAttribute("dataUsers", dataUsersList);
+        return "adminUsers";
     }
 
 }

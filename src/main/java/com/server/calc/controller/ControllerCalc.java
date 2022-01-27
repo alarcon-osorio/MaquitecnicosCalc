@@ -62,6 +62,10 @@ public class ControllerCalc {
     @GetMapping("/searchProducts")
     public String searchProduct(long importId, Model model) {
 
+        if (importId == 4){
+            return "calculoExcel";
+        }
+
         DataStatic dataStatic = serviceDataStatic.getById(importId);
         model.addAttribute("datastatic", dataStatic);
 

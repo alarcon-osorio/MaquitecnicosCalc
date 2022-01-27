@@ -1,5 +1,6 @@
 com\server\calc\config\AuthConfig.class
 com\server\calc\service\ServiceDataCalc.class
+com\server\calc\dto\DataCalcJoin.class
 com\server\calc\CalcApplication.class
 com\server\calc\service\ServiceDataStatic.class
 com\server\calc\service\ServiceDataProduct.class
@@ -10,8 +11,12 @@ com\server\calc\entity\DataType.class
 com\server\calc\entity\DataStatic.class
 com\server\calc\controller\auth0\LogoutHandler.class
 com\server\calc\dto\DataResult.class
+com\server\calc\repository\RepositoryDataUsers.class
 com\server\calc\controller\HomeController.class
 com\server\calc\repository\RepositoryDataProduct.class
+com\server\calc\controller\ControllerAdmin.class
 com\server\calc\repository\RepositoryDataCalc.class
 com\server\calc\controller\ControllerCalc.class
+com\server\calc\entity\DataUsers.class
+com\server\calc\service\ServiceDataUsers.class
 com\server\calc\dto\DataCastResult.class

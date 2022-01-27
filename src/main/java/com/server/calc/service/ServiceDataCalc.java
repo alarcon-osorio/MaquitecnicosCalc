@@ -21,5 +21,4 @@ public class ServiceDataCalc {
         return repositoryDataCalc.findBydDataStaticId(idDataStatic);
     }
 
-
 }

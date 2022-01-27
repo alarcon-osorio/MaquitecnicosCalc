@@ -14,7 +14,7 @@ public class ServiceDataProduct {
     RepositoryDataProduct repositoryDataProduct;
 
     public List<DataProduct> getAllDataProduct() {
-        return repositoryDataProduct.findAll();
+        return repositoryDataProduct.findAllDataProduct();
     }
 
     public DataProduct getDataProduct(Long productid){

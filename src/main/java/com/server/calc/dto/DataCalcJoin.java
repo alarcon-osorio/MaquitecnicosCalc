@@ -2,13 +2,17 @@ package com.server.calc.dto;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 @Data
 public class DataCalcJoin {
 
-        private long id;
-        private long iddatastatic;
+        @Id
+        private Long id;
         private String concept;
-        private long valueCop;
-        private long legalization;
+        private Long valueCop;
+        private Long legalization;
 
 }
