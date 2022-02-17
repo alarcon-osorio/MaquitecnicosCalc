@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <header th:insert="includes/header :: header"> </header>
 <header th:insert="includes/navbar :: navbar"> </header>
 
@@ -16,7 +16,7 @@
             </center>
             <form method="post">
                 <div class="form-group" th:object="${dataproductdata}">
-                    <label th:object="${datastatic}" for="reference" th:with="concept = *{concept}" th:text="'Número ' + ${#strings.substringAfter(concept, '-')}"></label>
+                    <label th:object="${datastatic}" for="reference" th:with="concept = *{concept}" th:text="'Número de Referencia' + ${#strings.substringAfter(concept, '-')}"></label>
                     <input type="text" class="form-control" th:value="' ' + *{reference} + ' - ' + *{description}" id="reference" placeholder="Valor en Pesos" disabled="true">
                 </div>
                 <div class="form-group" th:object="${dataproductdata}">

@@ -1,12 +1,12 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <header th:insert="includes/header :: header"> </header>
 <header th:insert="includes/navbar :: navbar"> </header>
 
 <div class="container mt-4 vj-destacados">
     <div class="row">
         <div class="col col-md-12 text-right mb-4">
-            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
             <a th:object="${datastatic}" th:href="@{/searchProducts(importId=*{id})}" class="btn btn-outline-success">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
     </div>
     <div class="row">

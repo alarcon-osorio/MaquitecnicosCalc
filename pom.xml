@@ -36,6 +36,20 @@ http://maven.apache.org/POM/4.0.0 ">
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+
+		<!--Análisis excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.16</version>
+		</dependency>
+		<!--Proceso 2007 excel-->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.16</version>
+		</dependency>
+
 		<!-- Add Log4j2 Dependency Vulnerability Fix-->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>

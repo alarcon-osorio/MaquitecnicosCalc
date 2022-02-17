@@ -1,0 +1,67 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <button type="button" id="export_button" class="btn btn-outline-success">Exportar Excel</button>
+            <a th:href="@{/searchProducts?importId=4}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+        </div>
+
+        <div>
+            <table id="data_calc" class="table table-bordered">
+                <tr>
+                    <th>Tipo Importación:</th>
+                    <td th:each="dataImportId : ${productImportId}" th:text="${dataImportId} == 1 ? 'DT' : 'SAMPA'"></td>
+                </tr>
+                <tr>
+                    <th>Referencia:</th>
+                    <td th:each="dataRef : ${productRef}" th:text="${dataRef}"></td>
+                </tr>
+                <tr>
+                    <th>Descripción:</th>
+                    <td th:each="dataDesc : ${productDesc}" th:text="${dataDesc}"></td>
+                </tr>
+                <tr>
+                    <th>Cantidades:</th>
+                    <td th:each="dataCant : ${productCant}" th:text="${dataCant} > 1  ? 'Más de ' + ${dataCant} + ' Unidades' : ${dataCant} + ' Unidad'"></td>
+                </tr>
+                <tr>
+                    <th>Precio VIP</th>
+                    <td th:each="dataVIP : ${vipCalc}" th:text="'$' + ${dataVIP} + '.00'"></td>
+                </tr>
+                <tr>
+                    <th>Distribuidor:</th>
+                    <td th:each="dataDist : ${distCalc}" th:text="'$' + ${dataDist} + '.00'"></td>
+                </tr>
+                <tr>
+                    <th>Consumidor:</th>
+                    <td th:each="dataCon : ${conCalc}" th:text="'$' +  ${dataCon} + '.00'"></td>
+                </tr>
+                <tr>
+                    <th>Precio al publico:</th>
+                    <td th:each="dataPub : ${pubCalc}" th:text="'$' + ${dataPub} + '.00'"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function html_table_to_excel(type){
+        var data = document.getElementById('data_calc');
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+        XLSX.writeFile(file, 'file.' + type);
+    }
+
+    const export_button = document.getElementById('export_button');
+
+    export_button.addEventListener('click', () =>  {
+        html_table_to_excel('xlsx');
+    });
+</script>
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>

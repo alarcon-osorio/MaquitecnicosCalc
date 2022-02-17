@@ -1,5 +1,6 @@
 package com.server.calc.controller;
 
+import com.server.calc.dto.DataCalcDTO;
 import com.server.calc.dto.DataCastResult;
 import com.server.calc.dto.DataResult;
 import com.server.calc.entity.DataCalc;
@@ -10,7 +11,11 @@ import com.server.calc.service.ServiceDataCalc;
 import com.server.calc.service.ServiceDataProduct;
 import com.server.calc.service.ServiceDataStatic;
 import com.server.calc.service.ServiceDataUsers;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -18,14 +23,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 
 @Controller
+@Slf4j
 public class ControllerCalc {
 
     @Autowired
@@ -59,10 +67,16 @@ public class ControllerCalc {
         return "index";
     }
 
-    @GetMapping("/searchProducts")
-    public String searchProduct(long importId, Model model) {
+    @RequestMapping("/searchProducts")
+    public String searchProduct(long importId, Model model, Integer pageNum) {
 
         if (importId == 4){
+            if(pageNum==null){
+                pageNum=1;
+            }
+            Pageable pageable = PageRequest.of(pageNum-1,1);
+            Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
+            model.addAttribute("productListSearch", productList);
             return "calculoExcel";
         }
 
@@ -73,6 +87,91 @@ public class ControllerCalc {
         model.addAttribute("datacalc", dataCalc);
 
         return "searchProducts";
+
+    }
+
+    @PostMapping("/printProducts")
+    public String printProduct(DataProduct dataProduct, Model model) {
+
+        String productData = dataProduct.getDescription();
+        String[] prodData = productData.split(",");
+
+        ArrayList<String> productRef = new ArrayList<>();
+        ArrayList<String> productDesc = new ArrayList<>();
+        ArrayList<String> productCant = new ArrayList<>();
+        ArrayList<String> productImportId = new ArrayList<>();
+
+        ArrayList<String> vipCalc = new ArrayList<>();
+        ArrayList<String> distCalc = new ArrayList<>();
+        ArrayList<String> conCalc = new ArrayList<>();
+        ArrayList<String> pubCalc = new ArrayList<>();
+
+        for (String data : prodData) {
+            String[] splitData = data.split("- ");
+            productRef.add(splitData[0]);
+            productDesc.add(splitData[1]);
+            productCant.add(splitData[2]);
+            productImportId.add(splitData[3]);
+
+            long quantity = Long.parseLong(splitData[2]);
+            NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
+
+            List<DataProduct> listDataProductValueDollar = serviceDataProduct.getListDataProductByValueDollar(splitData[0], quantity);
+            log.info("listData" + listDataProductValueDollar);
+
+            for (DataProduct dataProductValueDollar : listDataProductValueDollar) {
+
+                DataCalcDTO dataCalcDTO = serviceDataCalc.getDataMasiva(dataProductValueDollar.getImportId());
+                log.info("DataCalc " + dataCalcDTO);
+                log.info("legalizationOrigen " + dataCalcDTO.getLegalization());
+
+                dataCalcDTO.setValueCop((long) (dataCalcDTO.getValueCop() * dataProductValueDollar.getValueDollar()));
+                long legalization = dataCalcDTO.getLegalization();
+                dataCalcDTO.setLegalization((dataCalcDTO.getValueCop() * legalization / 100) + dataCalcDTO.getValueCop());
+
+                DataResult dataResult = new DataResult();
+
+                float VIP = 0.65F;
+                float DISTRIBUTOR = 0.6F;
+                float CONSUMER = 0.5F;
+                float PUBLICS = 0.4F;
+                float calcLegalization = dataCalcDTO.getLegalization();
+
+                log.info("lagal " + calcLegalization);
+
+                dataResult.setVip((((int) Math.ceil(calcLegalization / VIP) + 99) / 100) * 100);
+                dataResult.setDistributor((((int) Math.ceil(calcLegalization / DISTRIBUTOR) + 99) / 100) * 100);
+                dataResult.setConsumer((((int) Math.ceil(calcLegalization / CONSUMER) + 99) / 100) * 100);
+                dataResult.setPricePublic((((int) Math.ceil(calcLegalization / PUBLICS) + 99) / 100) * 100);
+
+                BigDecimal bdVip = BigDecimal.valueOf(dataResult.getVip());
+                BigDecimal bdDist = BigDecimal.valueOf(dataResult.getDistributor());
+                BigDecimal bdCon = BigDecimal.valueOf(dataResult.getConsumer());
+                BigDecimal bdPub = BigDecimal.valueOf(dataResult.getPricePublic());
+
+                log.info("VIP " + bdVip);
+                log.info("DIST " +bdDist);
+                log.info("CONS " +bdCon);
+                log.info("PUB " +bdPub);
+
+                vipCalc.add(formatter.format(bdVip.longValue()));
+                distCalc.add(formatter.format(bdDist.longValue()));
+                conCalc.add(formatter.format(bdCon.longValue()));
+                pubCalc.add(formatter.format(bdPub.longValue()));
+
+            }
+
+            model.addAttribute("vipCalc", vipCalc);
+            model.addAttribute("distCalc", distCalc);
+            model.addAttribute("conCalc", conCalc);
+            model.addAttribute("pubCalc", pubCalc);
+
+            model.addAttribute("productRef", productRef);
+            model.addAttribute("productDesc", productDesc);
+            model.addAttribute("productCant", productCant);
+            model.addAttribute("productImportId", productImportId);
+        }
+        return "printProducts";
 
     }
 
@@ -167,7 +266,6 @@ public class ControllerCalc {
                 dataCastResult.setPricePublicCast(formatter.format(bdPub.longValue()));
 
                 model.addAttribute("datacastresult", dataCastResult);
-
 
             }
 

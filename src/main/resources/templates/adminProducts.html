@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <header th:insert="includes/header :: header"> </header>
 <header th:insert="includes/navbar :: navbar"> </header>
 
@@ -7,8 +7,8 @@
         <div class="col col-md-12 text-right mb-4">
             <a th:href="@{/newProduct}" class="btn btn-outline-success">Agregar</a>
             <a th:href="@{/newProduct}" class="btn btn-outline-success">Subida Masiva</a>
-            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
             <a th:href="@{/admin}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
     </div>
     <div class="row">
@@ -41,9 +41,17 @@
             </tr>
             </tbody>
         </table>
+        <ul>
+            Página actual <b><span th:text="${productList.number}+1"></span></b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+            Total de paginas <b><span th:text="${productList.totalPages}"></span></b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+            Total productos <b><span th:text="${productList.totalElements}"></span></b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a th:href="@{/adminProducts(pageNum=1)}">Inicio</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a th:href="@{/adminProducts(pageNum= ${productList.hasPrevious()}?${productList.getNumber()}:1)}">Pagina anterior</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a th:href="@{/adminProducts(pageNum= ${productList.hasNext()}?${productList.getNumber()}+2:${productList.totalPages})}">Siguiente página</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a th:href="@{/adminProducts(pageNum= ${productList.totalPages} )}">Última página</a>
+        </ul>
     </div>
 </div>
 
 <footer th:insert="includes/footer :: footer"> </footer>
-</html>
 </html>
