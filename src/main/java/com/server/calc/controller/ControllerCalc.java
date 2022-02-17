@@ -74,7 +74,7 @@ public class ControllerCalc {
             if(pageNum==null){
                 pageNum=1;
             }
-            Pageable pageable = PageRequest.of(pageNum-1,1);
+            Pageable pageable = PageRequest.of(pageNum-1,5);
             Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
             model.addAttribute("productListSearch", productList);
             return "calculoExcel";
@@ -161,15 +161,17 @@ public class ControllerCalc {
 
             }
 
+            model.addAttribute("productImportId", productImportId);
+            model.addAttribute("productRef", productRef);
+            model.addAttribute("productDesc", productDesc);
+            model.addAttribute("productCant", productCant);
+
             model.addAttribute("vipCalc", vipCalc);
             model.addAttribute("distCalc", distCalc);
             model.addAttribute("conCalc", conCalc);
             model.addAttribute("pubCalc", pubCalc);
 
-            model.addAttribute("productRef", productRef);
-            model.addAttribute("productDesc", productDesc);
-            model.addAttribute("productCant", productCant);
-            model.addAttribute("productImportId", productImportId);
+
         }
         return "printProducts";
 
