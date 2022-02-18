@@ -11,8 +11,16 @@ public class ServiceDataTemp {
     @Autowired
     RepositoryDataTemp repositoryDataTemp;
 
-    public DataTemp saveDataTemp(DataTemp dataTemp){
-        return repositoryDataTemp.save(dataTemp);
+      public void saveDataTemp(long id, String imports,
+                                 String ref,
+                                 String desc,
+                                 String cant,
+                                 String vip,
+                                 String distri,
+                                 String consu,
+                                 String pub,
+                                 String export){
+          repositoryDataTemp.saveData(id, imports, ref, desc, cant, vip, distri, consu, pub, export);
     }
 
 }

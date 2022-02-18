@@ -148,6 +148,20 @@ public class ControllerCalc {
                 pubCalc.add(formatter.format(bdPub.longValue()));
 
                 DataTemp dataTemp = new DataTemp();
+
+                long id = 1;
+                String imports = splitData[3];
+                String ref =  splitData[0];
+                String desc = splitData[1];
+                String cant = splitData[2];
+
+                String vip = bdVip.toString();
+                String distri = bdDist.toString();
+                String consu = bdCon.toString();
+                String pub = bdPub.toString();
+                String export = "1";
+
+                /*
                 dataTemp.setImports(splitData[3]);
                 dataTemp.setRef(splitData[0]);
                 dataTemp.setDesc(splitData[1]);
@@ -157,8 +171,9 @@ public class ControllerCalc {
                 dataTemp.setConsu(bdCon.toString());
                 dataTemp.setPub(bdPub.toString());
                 dataTemp.setExport("1");
+                */
 
-                serviceDataTemp.saveDataTemp(dataTemp);
+                serviceDataTemp.saveDataTemp(id, imports, ref, desc, cant, vip, distri, consu, pub, export);
 
                 log.info("ImportId " + splitData[3]);
                 log.info("productRef " + splitData[0]);
