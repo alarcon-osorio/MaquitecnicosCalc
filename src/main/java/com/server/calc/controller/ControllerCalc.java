@@ -3,14 +3,8 @@ package com.server.calc.controller;
 import com.server.calc.dto.DataCalcDTO;
 import com.server.calc.dto.DataCastResult;
 import com.server.calc.dto.DataResult;
-import com.server.calc.entity.DataCalc;
-import com.server.calc.entity.DataProduct;
-import com.server.calc.entity.DataStatic;
-import com.server.calc.entity.DataUsers;
-import com.server.calc.service.ServiceDataCalc;
-import com.server.calc.service.ServiceDataProduct;
-import com.server.calc.service.ServiceDataStatic;
-import com.server.calc.service.ServiceDataUsers;
+import com.server.calc.entity.*;
+import com.server.calc.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,6 +42,9 @@ public class ControllerCalc {
     @Autowired
     ServiceDataUsers serviceDataUsers;
 
+    @Autowired
+    ServiceDataTemp serviceDataTemp;
+
     @GetMapping("/calc")
     public String index(Model model, @AuthenticationPrincipal OidcUser principal){
         if (principal != null) {
@@ -74,7 +71,7 @@ public class ControllerCalc {
             if(pageNum==null){
                 pageNum=1;
             }
-            Pageable pageable = PageRequest.of(pageNum-1,5);
+            Pageable pageable = PageRequest.of(pageNum-1,15);
             Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
             model.addAttribute("productListSearch", productList);
             return "calculoExcel";
@@ -122,8 +119,6 @@ public class ControllerCalc {
             for (DataProduct dataProductValueDollar : listDataProductValueDollar) {
 
                 DataCalcDTO dataCalcDTO = serviceDataCalc.getDataMasiva(dataProductValueDollar.getImportId());
-                log.info("DataCalc " + dataCalcDTO);
-                log.info("legalizationOrigen " + dataCalcDTO.getLegalization());
 
                 dataCalcDTO.setValueCop((long) (dataCalcDTO.getValueCop() * dataProductValueDollar.getValueDollar()));
                 long legalization = dataCalcDTO.getLegalization();
@@ -137,8 +132,6 @@ public class ControllerCalc {
                 float PUBLICS = 0.4F;
                 float calcLegalization = dataCalcDTO.getLegalization();
 
-                log.info("lagal " + calcLegalization);
-
                 dataResult.setVip((((int) Math.ceil(calcLegalization / VIP) + 99) / 100) * 100);
                 dataResult.setDistributor((((int) Math.ceil(calcLegalization / DISTRIBUTOR) + 99) / 100) * 100);
                 dataResult.setConsumer((((int) Math.ceil(calcLegalization / CONSUMER) + 99) / 100) * 100);
@@ -149,15 +142,33 @@ public class ControllerCalc {
                 BigDecimal bdCon = BigDecimal.valueOf(dataResult.getConsumer());
                 BigDecimal bdPub = BigDecimal.valueOf(dataResult.getPricePublic());
 
-                log.info("VIP " + bdVip);
-                log.info("DIST " +bdDist);
-                log.info("CONS " +bdCon);
-                log.info("PUB " +bdPub);
-
                 vipCalc.add(formatter.format(bdVip.longValue()));
                 distCalc.add(formatter.format(bdDist.longValue()));
                 conCalc.add(formatter.format(bdCon.longValue()));
                 pubCalc.add(formatter.format(bdPub.longValue()));
+
+                DataTemp dataTemp = new DataTemp();
+                dataTemp.setImports(splitData[3]);
+                dataTemp.setRef(splitData[0]);
+                dataTemp.setDesc(splitData[1]);
+                dataTemp.setCant(splitData[2]);
+                dataTemp.setVip(bdVip.toString());
+                dataTemp.setDistri(bdDist.toString());
+                dataTemp.setConsu(bdCon.toString());
+                dataTemp.setPub(bdPub.toString());
+                dataTemp.setExport("1");
+
+                serviceDataTemp.saveDataTemp(dataTemp);
+
+                log.info("ImportId " + splitData[3]);
+                log.info("productRef " + splitData[0]);
+                log.info("productDesc " + splitData[1]);
+                log.info("productCant " + splitData[2]);
+
+                log.info(bdVip.toString());
+                log.info(bdDist.toString());
+                log.info(bdCon.toString());
+                log.info(bdPub.toString());
 
             }
 
@@ -170,6 +181,7 @@ public class ControllerCalc {
             model.addAttribute("distCalc", distCalc);
             model.addAttribute("conCalc", conCalc);
             model.addAttribute("pubCalc", pubCalc);
+
 
 
         }
