@@ -24,6 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -71,10 +72,14 @@ public class ControllerCalc {
             if(pageNum==null){
                 pageNum=1;
             }
-            Pageable pageable = PageRequest.of(pageNum-1,15);
-            Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
-            model.addAttribute("productListSearch", productList);
+            Pageable pageable = PageRequest.of(pageNum-1, 102489); //102489
+            //Page<Stream<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
+            //model.addAttribute("productListSearch", productList);
             return "calculoExcel";
+        }
+
+        if (importId == 5){
+            return "registryProduct";
         }
 
         DataStatic dataStatic = serviceDataStatic.getById(importId);
@@ -89,6 +94,8 @@ public class ControllerCalc {
 
     @PostMapping("/printProducts")
     public String printProduct(DataProduct dataProduct, Model model) {
+
+        serviceDataTemp.truncateData();
 
         String productData = dataProduct.getDescription();
         String[] prodData = productData.split(",");
@@ -147,33 +154,22 @@ public class ControllerCalc {
                 conCalc.add(formatter.format(bdCon.longValue()));
                 pubCalc.add(formatter.format(bdPub.longValue()));
 
-                DataTemp dataTemp = new DataTemp();
-
-                long id = 1;
                 String imports = splitData[3];
+                if(imports.equals("1")) {
+                    imports = "DT";
+                }else if(imports.equals("2")) {
+                    imports = "SAMPA";
+                }
                 String ref =  splitData[0];
-                String desc = splitData[1];
-                String cant = splitData[2];
+                String descript = splitData[1];
+                long cant = Long.parseLong(splitData[2]);
 
                 String vip = bdVip.toString();
                 String distri = bdDist.toString();
                 String consu = bdCon.toString();
                 String pub = bdPub.toString();
-                String export = "1";
 
-                /*
-                dataTemp.setImports(splitData[3]);
-                dataTemp.setRef(splitData[0]);
-                dataTemp.setDesc(splitData[1]);
-                dataTemp.setCant(splitData[2]);
-                dataTemp.setVip(bdVip.toString());
-                dataTemp.setDistri(bdDist.toString());
-                dataTemp.setConsu(bdCon.toString());
-                dataTemp.setPub(bdPub.toString());
-                dataTemp.setExport("1");
-                */
-
-                serviceDataTemp.saveDataTemp(id, imports, ref, desc, cant, vip, distri, consu, pub, export);
+                serviceDataTemp.saveDataTemp(imports, ref, descript, cant, vip, distri, consu, pub);
 
                 log.info("ImportId " + splitData[3]);
                 log.info("productRef " + splitData[0]);
@@ -187,6 +183,13 @@ public class ControllerCalc {
 
             }
 
+            List<DataTemp> dataTempList = serviceDataTemp.getDataTemp();
+
+            log.info("ListData " + dataTempList);
+
+            model.addAttribute("dataTempList", dataTempList);
+
+            /*
             model.addAttribute("productImportId", productImportId);
             model.addAttribute("productRef", productRef);
             model.addAttribute("productDesc", productDesc);
@@ -196,6 +199,7 @@ public class ControllerCalc {
             model.addAttribute("distCalc", distCalc);
             model.addAttribute("conCalc", conCalc);
             model.addAttribute("pubCalc", pubCalc);
+            */
 
 
 

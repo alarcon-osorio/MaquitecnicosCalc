@@ -19,12 +19,11 @@ public class DataTemp {
 
     private String imports;
     private String ref;
-    private String desc;
-    private String cant;
+    private String descript;
+    private long cant;
     private String vip;
     private String distri;
     private String consu;
     private String pub;
-    private String export;
 
 }

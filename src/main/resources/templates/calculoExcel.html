@@ -2,25 +2,43 @@
 <header th:insert="includes/header :: header"> </header>
 <header th:insert="includes/navbar :: navbar"> </header>
 
+<div class="loader-page">Cargando todos los productos por favor espere... (Este proceso tardará máximo 1 Minuto)</div>
 <div class="container mt-4 vj-destacados">
     <div class="row">
         <div class="col col-md-12 text-right mb-4">
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
     </div>
-    <form th:action="@{/printProducts}" method="post">
-        <div class="form-group d-flex justify-content-between">
-            <select name="description" class="selectpicker" multiple data-live-search="true" required>
-                <option th:each="productList : ${productListSearch}" th:value="${productList.reference} + '- ' + ${productList.description} + '- ' + ${productList.amount} + '- ' + ${productList.importId} + '- ' "
-                        th:text="'Referencia: ' + ${productList.reference} + '- Nombre: ' + ${productList.description} + '- Cantidad: ' + ${productList.amount}">
-                </option>
-            </select>
-            <center>
-                <button type="submit" class="btn btn-primary">Calcular Productos</button>
-            </center>
-        </div>
 
-    </form>
+    <div>
+        <form th:action="@{/printProducts}" method="post">
+            <h2>Calculo Masivo de productos</h2>
+            <br>
+            <h6>Seleccione la cantidad de productos que desee y de click en calcular valores:</h6>
+            <br>
+            <div class="form-group d-flex justify-content-between">
+                <select name="description" class="selectpicker" multiple data-live-search="true" required>
+                    <option th:each="productList : ${productListSearch}" th:value="${productList.reference} + '- ' + ${productList.description} + '- ' + ${productList.amount} + '- ' + ${productList.importId} + '- ' "
+                            th:text="'Referencia: ' + ${productList.reference} + '- Nombre: ' + ${productList.description} + '- Cantidad: ' + ${productList.amount}">
+                    </option>
+                </select>
+                <center>
+                    <button type="submit" class="btn btn-primary">Calcular Valores</button>
+                </center>
+
+                <p th:fragment="fragments">Hola</p>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(window).on('load', function () {
+          setTimeout(function () {
+            $(".loader-page").css({visibility:"hidden",opacity:"0"})
+          }, 5000);
+
+        });
+    </script>
+
 </div>
 <footer th:insert="includes/footer :: footer"></footer>
 </html>

@@ -10,58 +10,36 @@
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
 
-        <div>
-            <table id="data_calc" class="table table-bordered">
-                <tr>
-                    <th>Tipo Importación:</th>
-                    <td th:each="dataImportId : ${productImportId}" th:text="${dataImportId} == 1 ? 'DT' : 'SAMPA'"></td>
-                </tr>
-                <tr>
-                    <th>Referencia:</th>
-                    <td th:each="dataRef : ${productRef}" th:text="${dataRef}"></td>
-                </tr>
-                <tr>
-                    <th>Descripción:</th>
-                    <td th:each="dataDesc : ${productDesc}" th:text="${dataDesc}"></td>
-                </tr>
-                <tr>
-                    <th>Cantidades:</th>
-                    <td th:each="dataCant : ${productCant}" th:text="${dataCant} > 1  ? 'Más de ' + ${dataCant} + ' Unidades' : ${dataCant} + ' Unidad'"></td>
-                </tr>
-                <tr>
-                    <th>Precio VIP</th>
-                    <td th:each="dataVIP : ${vipCalc}" th:text="'$' + ${dataVIP} + '.00'"></td>
-                </tr>
-                <tr>
-                    <th>Distribuidor:</th>
-                    <td th:each="dataDist : ${distCalc}" th:text="'$' + ${dataDist} + '.00'"></td>
-                </tr>
-                <tr>
-                    <th>Consumidor:</th>
-                    <td th:each="dataCon : ${conCalc}" th:text="'$' +  ${dataCon} + '.00'"></td>
-                </tr>
-                <tr>
-                    <th>Precio al publico:</th>
-                    <td th:each="dataPub : ${pubCalc}" th:text="'$' + ${dataPub} + '.00'"></td>
-                </tr>
-            </table>
-        </div>
+        <table id="data_calc" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tipo importación</th>
+                <th scope="col">Referencia</th>
+                <th scope="col">Descripción</th>
+                <th class="text-center" scope="col">Cantidad</th>
+                <th class="text-center" scope="col">VIP</th>
+                <th scope="col">Distribuidor</th>
+                <th scope="col">Consumidor</th>
+                <th scope="col">Publico</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dataTempList, iter : ${dataTempList}">
+                <th scope="row" th:text="${iter.index}+1"></th>
+                <td th:text="${dataTempList.imports}"></td>
+                <td th:text="${dataTempList.ref}"></td>
+                <td th:text="${dataTempList.descript}"></td>
+                <td align="center" th:text="${dataTempList.cant} > 1 ? 'Más de ' + ${dataTempList.cant} + ' Unidades': ${dataTempList.cant} + ' Unidad'"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.vip, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.distri, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.consu, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.pub, 0, 'COMMA', 2, 'POINT')}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-
-<script>
-    function html_table_to_excel(type){
-        var data = document.getElementById('data_calc');
-        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
-        XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
-        XLSX.writeFile(file, 'file.' + type);
-    }
-
-    const export_button = document.getElementById('export_button');
-
-    export_button.addEventListener('click', () =>  {
-        html_table_to_excel('xlsx');
-    });
-</script>
+<script type="text/javascript" src="js/owner.js"></script>
 <footer th:insert="includes/footer :: footer"> </footer>
 </html>

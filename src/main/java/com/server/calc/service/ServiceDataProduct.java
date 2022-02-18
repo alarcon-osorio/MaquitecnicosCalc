@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class ServiceDataProduct {
@@ -15,7 +16,7 @@ public class ServiceDataProduct {
     @Autowired
     RepositoryDataProduct repositoryDataProduct;
 
-    public Page<List<DataProduct>> getAllDataProductGeneral(Pageable pageable) {
+    public Page<Stream<DataProduct>> getAllDataProductGeneral(Pageable pageable) {
         return repositoryDataProduct.findAllDataProductGeneral(pageable);
     }
 

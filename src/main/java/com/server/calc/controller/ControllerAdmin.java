@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -77,7 +78,7 @@ public class ControllerAdmin {
             pageNum=1;
         }
         Pageable pageable = PageRequest.of(pageNum-1,5);
-        Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
+        Page<Stream<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
         log.info("Lista de Productos: " + productList);
         model.addAttribute("productList", productList);
         return "adminProducts";
