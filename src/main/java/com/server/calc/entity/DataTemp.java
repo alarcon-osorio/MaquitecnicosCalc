@@ -20,7 +20,7 @@ public class DataTemp {
     private String imports;
     private String ref;
     private String descript;
-    private long cant;
+    private String cant;
     private String vip;
     private String distri;
     private String consu;

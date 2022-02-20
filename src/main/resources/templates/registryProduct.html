@@ -8,22 +8,57 @@
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
 
-        <form>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Nombre de producto</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        <div class="container">
+            <h5 align="center">Formulario de registro para productos NO COTIZADOS</h5><br>
+            <div class="abs-center">
+                <form th:action="@{/registryProduct}" class="border p-3 form" method="POST">
+                    <div class="mb-3">
+                        <label for="refoem" class="form-label">Referencia OEM (Opcional)</label>
+                        <input type="number" class="form-control" id="refoem" name="refoem" value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="refsadt" class="form-label">Referencia SAMPA o DT</label>
+                        <input type="text" class="form-control" id="refsadt" name="refsadt" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cant" class="form-label">Cantidad requerida por el cliente</label>
+                        <input type="number" class="form-control" id="cant" name="cant" required value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Motivo</label>
+                        <select class="form-control" id="reason" name="reason" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Agotado">Agotado</option>
+                            <option value="No importado">No importado</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cop" class="form-label">Precio objetivo de venta - (COP)</label>
+                        <input type="text" class="form-control" id="cop" name="cop" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cantsug" class="form-label">Cantidad sugerida a importar</label>
+                        <input type="number" class="form-control" id="cantsug" name="cantsug" value="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="brand" class="form-label">Marca sugerida a importar</label>
+                        <select class="form-control" id="brand" name="brand" required>
+                            <option value="">Seleccione...</option>
+                            <option value="SAMPA">SAMPA</option>
+                            <option value="DT Spare Parts">DT Spare Parts</option>
+                            <option value="HD">HD</option>
+                            <option value="AerDiesel">AerDiesel</option>
+                            <option value="Cheeft">Cheeft</option>
+                            <option value="TAS">TAS</option>
+                            <option value="Original">Original</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success float-right">Registrar</button>
+                    <p th:text="${add}"></p>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Referencia</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
+    </div>
 </div>
 <footer th:insert="includes/footer :: footer"> </footer>
 </html>

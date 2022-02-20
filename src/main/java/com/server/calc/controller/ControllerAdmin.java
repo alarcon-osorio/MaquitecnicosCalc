@@ -3,6 +3,7 @@ package com.server.calc.controller;
 import com.server.calc.dto.DataCalcJoin;
 import com.server.calc.entity.DataCalc;
 import com.server.calc.entity.DataProduct;
+import com.server.calc.entity.DataRegistry;
 import com.server.calc.entity.DataUsers;
 import com.server.calc.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -38,6 +41,9 @@ public class ControllerAdmin {
 
     @Autowired
     ServiceDataProduct serviceDataProduct;
+
+    @Autowired
+    ServiceDataRegistry serviceDataRegistry;
 
     @GetMapping("/admin")
     public String admin(Model model, @AuthenticationPrincipal OidcUser principal) {
@@ -90,6 +96,13 @@ public class ControllerAdmin {
         log.info("Lista de Usuarios: " + dataUsersList);
         model.addAttribute("dataUsers", dataUsersList);
         return "adminUsers";
+    }
+
+    @GetMapping("/ulisted")
+    public String ulisted(Model model){
+        List<DataRegistry> dataRegistryList = serviceDataRegistry.getDataRegistryAll();
+        model.addAttribute("dataRegistryList", dataRegistryList);
+        return "adminUnlisted";
     }
 
 }

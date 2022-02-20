@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -45,6 +47,9 @@ public class ControllerCalc {
 
     @Autowired
     ServiceDataTemp serviceDataTemp;
+
+    @Autowired
+    ServiceDataRegistry serviceDataRegistry;
 
     @GetMapping("/calc")
     public String index(Model model, @AuthenticationPrincipal OidcUser principal){
@@ -73,8 +78,8 @@ public class ControllerCalc {
                 pageNum=1;
             }
             Pageable pageable = PageRequest.of(pageNum-1, 102489); //102489
-            //Page<Stream<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
-            //model.addAttribute("productListSearch", productList);
+            Page<Stream<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
+            model.addAttribute("productListSearch", productList);
             return "calculoExcel";
         }
 
@@ -117,11 +122,11 @@ public class ControllerCalc {
             productCant.add(splitData[2]);
             productImportId.add(splitData[3]);
 
-            long quantity = Long.parseLong(splitData[2]);
+            int quantity = Integer.parseInt(splitData[2]);
             NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
 
             List<DataProduct> listDataProductValueDollar = serviceDataProduct.getListDataProductByValueDollar(splitData[0], quantity);
-            log.info("listData" + listDataProductValueDollar);
+            log.info("listData " + listDataProductValueDollar);
 
             for (DataProduct dataProductValueDollar : listDataProductValueDollar) {
 
@@ -184,24 +189,7 @@ public class ControllerCalc {
             }
 
             List<DataTemp> dataTempList = serviceDataTemp.getDataTemp();
-
-            log.info("ListData " + dataTempList);
-
             model.addAttribute("dataTempList", dataTempList);
-
-            /*
-            model.addAttribute("productImportId", productImportId);
-            model.addAttribute("productRef", productRef);
-            model.addAttribute("productDesc", productDesc);
-            model.addAttribute("productCant", productCant);
-
-            model.addAttribute("vipCalc", vipCalc);
-            model.addAttribute("distCalc", distCalc);
-            model.addAttribute("conCalc", conCalc);
-            model.addAttribute("pubCalc", pubCalc);
-            */
-
-
 
         }
         return "printProducts";
@@ -309,6 +297,18 @@ public class ControllerCalc {
             return "errorsTemplate";
         }
 
+    }
+
+    @RequestMapping("/registryProduct")
+    public String registryProducts(@ModelAttribute("dataRegistry") @Valid DataRegistry dataRegistry, Model model){
+        try{
+            log.info("dataRegistry " + dataRegistry);
+            serviceDataRegistry.saveDataRegistry(dataRegistry);
+            model.addAttribute("add", "Agregado correctamente");
+        }catch (Exception ex){
+            model.addAttribute("add", "No se pudo agregar");
+        }
+        return "redirect:/searchProducts?importId=5";
     }
 
 }

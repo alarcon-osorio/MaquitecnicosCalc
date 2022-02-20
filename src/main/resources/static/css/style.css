@@ -77,3 +77,28 @@
     animation: rotarload 1s ease-out infinite;
     transform: rotate(0deg);
   }
+
+@media only screen and (max-width:786px) {
+.bootstrap-select > .dropdown-toggle {
+  width: 370px !important;
+}
+.filter-option{
+   position: inherit !important;
+   white-space: initial;
+}
+.personality {
+   margin-top: -43px;
+   margin-left: -150px !important;
+   position: absolute;
+}
+}
+
+.abs-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  width: 600px;
+}
