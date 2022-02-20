@@ -302,7 +302,6 @@ public class ControllerCalc {
     @RequestMapping("/registryProduct")
     public String registryProducts(@ModelAttribute("dataRegistry") @Valid DataRegistry dataRegistry, Model model){
         try{
-            log.info("dataRegistry " + dataRegistry);
             serviceDataRegistry.saveDataRegistry(dataRegistry);
             model.addAttribute("add", "Agregado correctamente");
         }catch (Exception ex){
