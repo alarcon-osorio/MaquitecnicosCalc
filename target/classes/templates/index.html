@@ -28,7 +28,7 @@
                     <h5 th:text="${datastat.concept}" class="card-title"></h5>
                 </div>
                 <div class="card-footer text-muted">
-                    <a th:href="@{/searchProducts(importId=${datastat.id})}" class="btn btn-primary">Calcular Valores</a>
+                    <a th:href="@{/searchProducts(importId=${datastat.id})}" th:text="${datastat.id} == '5' ? 'Registrar Productos' :  'Calcular Valores'" class="btn btn-primary"></a>
                 </div>
             </div>
         </div>
