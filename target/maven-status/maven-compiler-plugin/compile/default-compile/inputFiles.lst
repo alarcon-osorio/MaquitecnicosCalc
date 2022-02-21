@@ -1,22 +1,31 @@
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\controller\HomeController.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\entity\DataUsers.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\controller\ControllerCalc.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\entity\DataProduct.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\service\ServiceDataCalc.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\config\AuthConfig.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\dto\DataCalcJoin.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\repository\RepositoryDataStatic.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\service\ServiceDataProduct.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\entity\DataCalc.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\entity\DataType.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\service\ServiceDataUsers.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\dto\DataResult.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\repository\RepositoryDataCalc.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\controller\auth0\LogoutHandler.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\entity\DataStatic.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\service\ServiceDataStatic.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\repository\RepositoryDataUsers.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\CalcApplication.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\controller\ControllerAdmin.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\repository\RepositoryDataProduct.java
-E:\Usuarios\jalarcon\Documents\Documentos Personales\MT\maquitecnicoscalc\src\main\java\com\server\calc\dto\DataCastResult.java
+C:\Projects\src\main\java\com\server\calc\entity\DataProduct.java
+C:\Projects\src\main\java\com\server\calc\entity\DataType.java
+C:\Projects\src\main\java\com\server\calc\dto\DataCalcJoin.java
+C:\Projects\src\main\java\com\server\calc\entity\DataStatic.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataStatic.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataCalcJoin.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataCalcJoin.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataCalc.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataTemp.java
+C:\Projects\src\main\java\com\server\calc\CalcApplication.java
+C:\Projects\src\main\java\com\server\calc\entity\DataRegistry.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataUsers.java
+C:\Projects\src\main\java\com\server\calc\controller\HomeController.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataProduct.java
+C:\Projects\src\main\java\com\server\calc\controller\ControllerCalc.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataCalc.java
+C:\Projects\src\main\java\com\server\calc\config\AuthConfig.java
+C:\Projects\src\main\java\com\server\calc\dto\DataResult.java
+C:\Projects\src\main\java\com\server\calc\entity\DataTemp.java
+C:\Projects\src\main\java\com\server\calc\controller\auth0\LogoutHandler.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataProduct.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataRegistry.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataTemp.java
+C:\Projects\src\main\java\com\server\calc\entity\DataCalc.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataRegistry.java
+C:\Projects\src\main\java\com\server\calc\controller\ControllerAdmin.java
+C:\Projects\src\main\java\com\server\calc\repository\RepositoryDataStatic.java
+C:\Projects\src\main\java\com\server\calc\dto\DataCalcDTO.java
+C:\Projects\src\main\java\com\server\calc\dto\DataCastResult.java
+C:\Projects\src\main\java\com\server\calc\entity\DataUsers.java
+C:\Projects\src\main\java\com\server\calc\service\ServiceDataUsers.java
