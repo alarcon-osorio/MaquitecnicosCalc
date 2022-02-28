@@ -15,6 +15,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Fecha</th>
                 <th scope="col">Referencia OEM</th>
                 <th scope="col">Referencia SAMPA o DT</th>
                 <th scope="col">Cantidad</th>
@@ -22,11 +23,13 @@
                 <th scope="col">Venta - (COP)</th>
                 <th scope="col">Cantidad sugerida</th>
                 <th scope="col">Marca sugerida</th>
+                <th scope="col">Usuario</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="dataRegistryList, iter : ${dataRegistryList}">
                 <th scope="row" th:text="${iter.index}+1"></th>
+                <td th:text="${dataRegistryList.datereg}"></td>
                 <td th:text="${dataRegistryList.refoem}"></td>
                 <td th:text="${dataRegistryList.refsadt}"></td>
                 <td th:text="${dataRegistryList.cant}"></td>
@@ -34,6 +37,7 @@
                 <td th:text="'$' + ${#numbers.formatDecimal(dataRegistryList.cop, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td th:text="${dataRegistryList.cantsug}"></td>
                 <td th:text="${dataRegistryList.brand}"></td>
+                <td th:text="${dataRegistryList.user}"></td>
             </tr>
             </tbody>
         </table>

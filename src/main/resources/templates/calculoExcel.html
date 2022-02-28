@@ -16,11 +16,8 @@
             <br>
             <h6>Seleccione la cantidad de productos que desee y de click en calcular valores:</h6>
             <br>
-            <div class="form-group d-flex justify-content-between">
-                <select name="description" class="selectpicker" multiple data-live-search="true" required>
-                    <option th:each="productList : ${productListSearch}" th:value="${productList.reference} + '- ' + ${productList.description} + '- ' + ${productList.amount} + '- ' + ${productList.importId} + '- ' "
-                            th:text="'Referencia: ' + ${productList.reference} + '- Nombre: ' + ${productList.description} + '- Cantidad: ' + ${productList.amount}">
-                    </option>
+            <div class="form-group d-flex justify-content-between" >
+                <select id="dropdown" name="description"  multiple data-live-search="true" required>
                 </select>
                 <center>
                     <button type="submit" class="btn btn-primary personality">Calcular Valores</button>
@@ -28,15 +25,49 @@
             </div>
         </form>
     </div>
-    <script>
-        $(window).on('load', function () {
-          setTimeout(function () {
-            $(".loader-page").css({visibility:"hidden",opacity:"0"})
-          }, 5000);
-
-        });
-    </script>
-
 </div>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.15/dist/css/bootstrap-select.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.15/dist/js/bootstrap-select.min.js"></script>
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.15/dist/js/i18n/defaults-es_ES.min.js"></script>
+<script>
+//Multiselect Search
+$(document).ready(function() {
+    var select = $("#dropdown");
+    var init;
+    var end;   //102489
+
+    myFunct(0, 1000);
+
+    function myFunct(init, end){
+        console.log(end);
+        $.ajax({
+        url : 'api/getProductsLimit',
+        data : {init, end},
+        type : 'GET',
+        dataType : 'json',
+        success : function(json) {
+            $(json).each(function(i, v){
+                select.append('<option value="' + v.reference + '- ' + v.description + '- ' + v.amount + '- ' + v.importId + '- '  + '">' + v.id + ' - ' + 'Referencia: ' + v.reference + '- ' + '- Nombre: ' + v.description + '- Cantidad: ' + v.amount + '</option>');
+            })
+
+            //Asigna la clase selectpicker al id
+            $('#dropdown').selectpicker();
+
+            $(".loader-page").css({visibility:"hidden",opacity:"0"})
+        },
+        error : function(xhr, status) {
+            $(".loader-page").css({visibility:"hidden",opacity:"0"})
+            alert('Existe un problema');
+        }
+        });
+     }
+
+})
+</script>
+
 <footer th:insert="includes/footer :: footer"></footer>
 </html>

@@ -8,16 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Stream;
-
 @Repository
 public interface RepositoryDataProduct extends JpaRepository<DataProduct, Long> {
 
     @Query(value = "select * from dataproduct", nativeQuery = true)
-    Page<Stream<DataProduct>> findAllDataProductGeneral(Pageable pageable);
+    Page<List<DataProduct>> findAllDataProductGeneral(Pageable pageable);
 
-    @Query(value = "select * from dataproduct limit 100", nativeQuery = true)
+    @Query(value = "select * from dataproduct limit 10", nativeQuery = true)
     List<DataProduct> findAllDataProduct();
+
+    @Query(value = "select * from dataproduct limit ?1 , ?2", nativeQuery = true)
+    List<DataProduct> findAllDataProductLimit(int init, int end);
 
     @Query(value = "select * from dataproduct d where d.id =?1", nativeQuery = true)
     DataProduct findId(Long id);

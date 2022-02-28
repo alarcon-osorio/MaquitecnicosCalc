@@ -21,5 +21,6 @@ public class DataUsers {
     private String login;
     private String password;
     private String profile;
+    private String state;
 
 }

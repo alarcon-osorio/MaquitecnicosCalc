@@ -18,6 +18,7 @@ public class DataRegistry {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    public String datereg;
     private long refoem;
     private String refsadt;
     private long cant;
@@ -25,5 +26,6 @@ public class DataRegistry {
     private String cop;
     private long cantsug;
     private String brand;
+    public String user;
 
 }

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class ServiceDataProduct {
@@ -16,12 +15,16 @@ public class ServiceDataProduct {
     @Autowired
     RepositoryDataProduct repositoryDataProduct;
 
-    public Page<Stream<DataProduct>> getAllDataProductGeneral(Pageable pageable) {
+    public Page<List<DataProduct>> getAllDataProductGeneral(Pageable pageable) {
         return repositoryDataProduct.findAllDataProductGeneral(pageable);
     }
 
     public List<DataProduct> getAllDataProduct() {
         return repositoryDataProduct.findAllDataProduct();
+    }
+
+    public List<DataProduct> getAllDataProductLimit(int init, int end) {
+        return repositoryDataProduct.findAllDataProductLimit(init, end);
     }
 
     public DataProduct getDataProduct(Long productid){

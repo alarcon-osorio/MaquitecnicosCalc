@@ -20,6 +20,7 @@
                 <th scope="col">Login</th>
                 <th scope="col">Password</th>
                 <th scope="col">Perfil</th>
+                <th scope="col">Estado</th>
                 <th scope="col">Acciones</th>
             </tr>
             </thead>
@@ -31,6 +32,7 @@
                 <td th:text="${dataUsers.login}"></td>
                 <td th:text="${dataUsers.password}"></td>
                 <td th:text="${dataUsers.profile}"></td>
+                <td th:text="${dataUsers.state}"></td>
                 <td>
                     <center>
                         <a href="#" th:text="Editar" class="btn btn-success"></a>

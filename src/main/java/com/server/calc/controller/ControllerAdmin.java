@@ -6,7 +6,7 @@ import com.server.calc.entity.DataProduct;
 import com.server.calc.entity.DataRegistry;
 import com.server.calc.entity.DataUsers;
 import com.server.calc.service.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,8 +23,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Slf4j
 @Controller
+@Log4j2
 public class ControllerAdmin {
 
     @Autowired
@@ -84,7 +84,7 @@ public class ControllerAdmin {
             pageNum=1;
         }
         Pageable pageable = PageRequest.of(pageNum-1,5);
-        Page<Stream<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
+        Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
         log.info("Lista de Productos: " + productList);
         model.addAttribute("productList", productList);
         return "adminProducts";

@@ -13,6 +13,16 @@
             <div class="abs-center">
                 <form th:action="@{/registryProduct}" class="border p-3 form" method="POST">
                     <div class="mb-3">
+                        <label for="datereg" class="form-label">Fecha de registro</label>
+                        <b><p id="datereginfo"></p></b>
+                        <input type="hidden" class="form-control" id="datereg" name="datereg">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user" class="form-label">Usuario</label>
+                        <b><p th:text="${profile.get('name')}"></p></b>
+                        <input type="hidden" class="form-control" id="user" name="user" th:value="${profile.get('name')}" >
+                    </div>
+                    <div class="mb-3">
                         <label for="refoem" class="form-label">Referencia OEM (Opcional)</label>
                         <input type="number" class="form-control" id="refoem" name="refoem" value="0">
                     </div>
@@ -60,5 +70,13 @@
         </div>
     </div>
 </div>
+<script>
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    document.getElementById("datereg").value = day + "/" + month + "/" + year;
+    document.getElementById("datereginfo").innerHTML = day + "/" + month + "/" + year;
+</script>
 <footer th:insert="includes/footer :: footer"> </footer>
 </html>

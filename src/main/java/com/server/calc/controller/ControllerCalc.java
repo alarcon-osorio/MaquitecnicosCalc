@@ -5,20 +5,13 @@ import com.server.calc.dto.DataCastResult;
 import com.server.calc.dto.DataResult;
 import com.server.calc.entity.*;
 import com.server.calc.service.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -26,11 +19,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Stream;
-
 
 @Controller
-@Slf4j
+@Log4j2
 public class ControllerCalc {
 
     @Autowired
@@ -71,19 +62,14 @@ public class ControllerCalc {
     }
 
     @RequestMapping("/searchProducts")
-    public String searchProduct(long importId, Model model, Integer pageNum) {
+    public String searchProduct(long importId, @AuthenticationPrincipal OidcUser principal, Integer pageNum, Model model) {
 
         if (importId == 4){
-            if(pageNum==null){
-                pageNum=1;
-            }
-            Pageable pageable = PageRequest.of(pageNum-1, 102489); //102489
-            Page<Stream<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
-            model.addAttribute("productListSearch", productList);
-            return "calculoExcel";
+           return "calculoExcel";
         }
 
         if (importId == 5){
+            model.addAttribute("profile", principal.getClaims());
             return "registryProduct";
         }
 
@@ -100,99 +86,107 @@ public class ControllerCalc {
     @PostMapping("/printProducts")
     public String printProduct(DataProduct dataProduct, Model model) {
 
-        serviceDataTemp.truncateData();
+        try{
+            log.info("dataProduct" + dataProduct);
 
-        String productData = dataProduct.getDescription();
-        String[] prodData = productData.split(",");
+            serviceDataTemp.truncateData();
 
-        ArrayList<String> productRef = new ArrayList<>();
-        ArrayList<String> productDesc = new ArrayList<>();
-        ArrayList<String> productCant = new ArrayList<>();
-        ArrayList<String> productImportId = new ArrayList<>();
+            String productData = dataProduct.getDescription();
+            String[] prodData = productData.split(",");
 
-        ArrayList<String> vipCalc = new ArrayList<>();
-        ArrayList<String> distCalc = new ArrayList<>();
-        ArrayList<String> conCalc = new ArrayList<>();
-        ArrayList<String> pubCalc = new ArrayList<>();
+            ArrayList<String> productRef = new ArrayList<>();
+            ArrayList<String> productDesc = new ArrayList<>();
+            ArrayList<String> productCant = new ArrayList<>();
+            ArrayList<String> productImportId = new ArrayList<>();
 
-        for (String data : prodData) {
-            String[] splitData = data.split("- ");
-            productRef.add(splitData[0]);
-            productDesc.add(splitData[1]);
-            productCant.add(splitData[2]);
-            productImportId.add(splitData[3]);
+            ArrayList<String> vipCalc = new ArrayList<>();
+            ArrayList<String> distCalc = new ArrayList<>();
+            ArrayList<String> conCalc = new ArrayList<>();
+            ArrayList<String> pubCalc = new ArrayList<>();
 
-            int quantity = Integer.parseInt(splitData[2]);
-            NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
+            for (String data : prodData) {
+                String[] splitData = data.split("- ");
+                productRef.add(splitData[0]);
+                productDesc.add(splitData[1]);
+                productCant.add(splitData[2]);
+                productImportId.add(splitData[3]);
 
-            List<DataProduct> listDataProductValueDollar = serviceDataProduct.getListDataProductByValueDollar(splitData[0], quantity);
-            log.info("listData " + listDataProductValueDollar);
+                int quantity = Integer.parseInt(splitData[2]);
+                NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
 
-            for (DataProduct dataProductValueDollar : listDataProductValueDollar) {
+                List<DataProduct> listDataProductValueDollar = serviceDataProduct.getListDataProductByValueDollar(splitData[0], quantity);
+                log.info("listData " + listDataProductValueDollar);
 
-                DataCalcDTO dataCalcDTO = serviceDataCalc.getDataMasiva(dataProductValueDollar.getImportId());
+                for (DataProduct dataProductValueDollar : listDataProductValueDollar) {
 
-                dataCalcDTO.setValueCop((long) (dataCalcDTO.getValueCop() * dataProductValueDollar.getValueDollar()));
-                long legalization = dataCalcDTO.getLegalization();
-                dataCalcDTO.setLegalization((dataCalcDTO.getValueCop() * legalization / 100) + dataCalcDTO.getValueCop());
+                    DataCalcDTO dataCalcDTO = serviceDataCalc.getDataMasiva(dataProductValueDollar.getImportId());
 
-                DataResult dataResult = new DataResult();
+                    dataCalcDTO.setValueCop((long) (dataCalcDTO.getValueCop() * dataProductValueDollar.getValueDollar()));
+                    long legalization = dataCalcDTO.getLegalization();
+                    dataCalcDTO.setLegalization((dataCalcDTO.getValueCop() * legalization / 100) + dataCalcDTO.getValueCop());
 
-                float VIP = 0.65F;
-                float DISTRIBUTOR = 0.6F;
-                float CONSUMER = 0.5F;
-                float PUBLICS = 0.4F;
-                float calcLegalization = dataCalcDTO.getLegalization();
+                    DataResult dataResult = new DataResult();
 
-                dataResult.setVip((((int) Math.ceil(calcLegalization / VIP) + 99) / 100) * 100);
-                dataResult.setDistributor((((int) Math.ceil(calcLegalization / DISTRIBUTOR) + 99) / 100) * 100);
-                dataResult.setConsumer((((int) Math.ceil(calcLegalization / CONSUMER) + 99) / 100) * 100);
-                dataResult.setPricePublic((((int) Math.ceil(calcLegalization / PUBLICS) + 99) / 100) * 100);
+                    float VIP = 0.65F;
+                    float DISTRIBUTOR = 0.6F;
+                    float CONSUMER = 0.5F;
+                    float PUBLICS = 0.4F;
+                    float calcLegalization = dataCalcDTO.getLegalization();
 
-                BigDecimal bdVip = BigDecimal.valueOf(dataResult.getVip());
-                BigDecimal bdDist = BigDecimal.valueOf(dataResult.getDistributor());
-                BigDecimal bdCon = BigDecimal.valueOf(dataResult.getConsumer());
-                BigDecimal bdPub = BigDecimal.valueOf(dataResult.getPricePublic());
+                    dataResult.setVip((((int) Math.ceil(calcLegalization / VIP) + 99) / 100) * 100);
+                    dataResult.setDistributor((((int) Math.ceil(calcLegalization / DISTRIBUTOR) + 99) / 100) * 100);
+                    dataResult.setConsumer((((int) Math.ceil(calcLegalization / CONSUMER) + 99) / 100) * 100);
+                    dataResult.setPricePublic((((int) Math.ceil(calcLegalization / PUBLICS) + 99) / 100) * 100);
 
-                vipCalc.add(formatter.format(bdVip.longValue()));
-                distCalc.add(formatter.format(bdDist.longValue()));
-                conCalc.add(formatter.format(bdCon.longValue()));
-                pubCalc.add(formatter.format(bdPub.longValue()));
+                    BigDecimal bdVip = BigDecimal.valueOf(dataResult.getVip());
+                    BigDecimal bdDist = BigDecimal.valueOf(dataResult.getDistributor());
+                    BigDecimal bdCon = BigDecimal.valueOf(dataResult.getConsumer());
+                    BigDecimal bdPub = BigDecimal.valueOf(dataResult.getPricePublic());
 
-                String imports = splitData[3];
-                if(imports.equals("1")) {
-                    imports = "DT";
-                }else if(imports.equals("2")) {
-                    imports = "SAMPA";
+                    vipCalc.add(formatter.format(bdVip.longValue()));
+                    distCalc.add(formatter.format(bdDist.longValue()));
+                    conCalc.add(formatter.format(bdCon.longValue()));
+                    pubCalc.add(formatter.format(bdPub.longValue()));
+
+                    String imports = splitData[3];
+                    if(imports.equals("1")) {
+                        imports = "DT";
+                    }else if(imports.equals("2")) {
+                        imports = "SAMPA";
+                    }
+                    String ref =  splitData[0];
+                    String descript = splitData[1];
+                    long cant = Long.parseLong(splitData[2]);
+
+                    String vip = bdVip.toString();
+                    String distri = bdDist.toString();
+                    String consu = bdCon.toString();
+                    String pub = bdPub.toString();
+
+                    serviceDataTemp.saveDataTemp(imports, ref, descript, cant, vip, distri, consu, pub);
+
+                    log.info("ImportId " + splitData[3]);
+                    log.info("productRef " + splitData[0]);
+                    log.info("productDesc " + splitData[1]);
+                    log.info("productCant " + splitData[2]);
+
+                    log.info(bdVip.toString());
+                    log.info(bdDist.toString());
+                    log.info(bdCon.toString());
+                    log.info(bdPub.toString());
+
                 }
-                String ref =  splitData[0];
-                String descript = splitData[1];
-                long cant = Long.parseLong(splitData[2]);
 
-                String vip = bdVip.toString();
-                String distri = bdDist.toString();
-                String consu = bdCon.toString();
-                String pub = bdPub.toString();
-
-                serviceDataTemp.saveDataTemp(imports, ref, descript, cant, vip, distri, consu, pub);
-
-                log.info("ImportId " + splitData[3]);
-                log.info("productRef " + splitData[0]);
-                log.info("productDesc " + splitData[1]);
-                log.info("productCant " + splitData[2]);
-
-                log.info(bdVip.toString());
-                log.info(bdDist.toString());
-                log.info(bdCon.toString());
-                log.info(bdPub.toString());
+                List<DataTemp> dataTempList = serviceDataTemp.getDataTemp();
+                model.addAttribute("dataTempList", dataTempList);
 
             }
 
-            List<DataTemp> dataTempList = serviceDataTemp.getDataTemp();
-            model.addAttribute("dataTempList", dataTempList);
-
+            return "printProducts";
+        }catch (Exception ex){
+            model.addAttribute("error", ex);
+            return "errorsTemplate";
         }
-        return "printProducts";
 
     }
 
