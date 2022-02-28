@@ -27,5 +27,6 @@ public class DataRegistry {
     private long cantsug;
     private String brand;
     public String user;
+    public String client;
 
 }

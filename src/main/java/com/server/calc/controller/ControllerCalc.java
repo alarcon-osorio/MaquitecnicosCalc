@@ -62,7 +62,7 @@ public class ControllerCalc {
     }
 
     @RequestMapping("/searchProducts")
-    public String searchProduct(long importId, @AuthenticationPrincipal OidcUser principal, Integer pageNum, Model model) {
+    public String searchProduct(long importId, boolean add, @AuthenticationPrincipal OidcUser principal, Model model) {
 
         if (importId == 4){
            return "calculoExcel";
@@ -70,6 +70,9 @@ public class ControllerCalc {
 
         if (importId == 5){
             model.addAttribute("profile", principal.getClaims());
+            if (add) {
+                model.addAttribute("add", "Agregado");
+            }
             return "registryProduct";
         }
 
@@ -294,14 +297,14 @@ public class ControllerCalc {
     }
 
     @RequestMapping("/registryProduct")
-    public String registryProducts(@ModelAttribute("dataRegistry") @Valid DataRegistry dataRegistry, Model model){
+    public String registryProducts(@ModelAttribute("dataRegistry") @Valid DataRegistry dataRegistry, Model model, @AuthenticationPrincipal OidcUser principal){
         try{
             serviceDataRegistry.saveDataRegistry(dataRegistry);
-            model.addAttribute("add", "Agregado correctamente");
         }catch (Exception ex){
-            model.addAttribute("add", "No se pudo agregar");
+            model.addAttribute("err", "Agregado");
+            return "errorsTemplate";
         }
-        return "redirect:/searchProducts?importId=5";
+        return "redirect:/searchProducts?importId=5&add=true";
     }
 
 }
