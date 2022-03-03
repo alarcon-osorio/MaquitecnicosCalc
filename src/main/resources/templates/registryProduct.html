@@ -9,7 +9,7 @@
         </div>
 
         <div class="container">
-            <h5 align="center">Formulario de registro para productos NO COTIZADOS</h5><br>
+            <h2 align="center">Formulario de registro para productos NO COTIZADOS</h2><br>
             <div th:if="${add} == 'Agregado'" class="alert alert-success alert-dismissible fade show" role="alert" id="add">
                 <strong>Exito!</strong> tu registro se agrego exitosamente.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -18,10 +18,10 @@
             </div>
             <div class="abs-center">
                 <form th:action="@{/registryProduct}" class="border p-3 form" method="POST">
-                    <div class="mb-3">
+                    <div class="mb-3" >
                         <label for="datereg" class="form-label">Fecha de registro</label>
-                        <b><p id="datereginfo"></p></b>
-                        <input type="hidden" class="form-control" id="datereg" name="datereg">
+                        <b><p th:text="${dateFormat}"></p></b>
+                        <input type="date" style="display:none" class="form-control" id="datereg" name="datereg" th:value="${date}" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="user" class="form-label">Usuario</label>
@@ -46,6 +46,7 @@
                             <option value="">Seleccione...</option>
                             <option value="Agotado">Agotado</option>
                             <option value="No importado">No importado</option>
+                            <option value="No importado">Sugerencia asesor</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -93,16 +94,9 @@
 
     $(document).ready(function() {
         setTimeout(function() {
-            $("#add").fadeOut(1000);
-        },1000);
+            $("#add").fadeOut(4000);
+        },4000);
     });
-
-    date = new Date();
-    year = date.getFullYear();
-    month = date.getMonth() + 1;
-    day = date.getDate();
-    document.getElementById("datereg").value = day + "/" + month + "/" + year;
-    document.getElementById("datereginfo").innerHTML = day + "/" + month + "/" + year;
 </script>
 <footer th:insert="includes/footer :: footer"> </footer>
 </html>

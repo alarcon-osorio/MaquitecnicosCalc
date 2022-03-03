@@ -5,17 +5,21 @@
 <div class="container mt-4 vj-destacados">
     <div class="row">
         <div class="col col-md-12 text-right mb-4">
-            <button type="button" id="export_button" class="btn btn-outline-success">Exportar Excel</button>
+            <!--Export JavaScript -->
+            <!--<button type="button" id="export_button" class="btn btn-outline-success">Exportar Excel</button>-->
+            <!--Apacha POI -->
+            <button th:href="@{/export/excel}" type="button" class="btn btn-outline-success">Exportar Excel</button>
             <a th:href="@{/admin}" class="btn btn-outline-danger">Atrás</a>
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
     </div>
+    <h2 align="center">Reporte no Cotizados</h2><br>
     <div class="row">
         <table id="data_calc" class="table table-striped">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Fecha</th>
+                <th scope="col" style="width:120px">Fecha registro</th>
                 <th scope="col">Referencia OEM</th>
                 <th scope="col">Referencia SAMPA o DT</th>
                 <th scope="col">Cantidad</th>
@@ -30,7 +34,7 @@
             <tbody>
             <tr th:each="dataRegistryList, iter : ${dataRegistryList}">
                 <th scope="row" th:text="${iter.index}+1"></th>
-                <td th:text="${dataRegistryList.datereg}"></td>
+                <td th:text="${#strings.substring(dataRegistryList.datereg,8,10) + '-' + #strings.substring(dataRegistryList.datereg,5,7) + '-' + #strings.substring(dataRegistryList.datereg,0,4)}"></td>
                 <td th:text="${dataRegistryList.refoem}"></td>
                 <td th:text="${dataRegistryList.refsadt}"></td>
                 <td th:text="${dataRegistryList.cant}"></td>

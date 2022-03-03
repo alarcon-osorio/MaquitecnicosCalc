@@ -7,6 +7,7 @@ com\server\calc\entity\DataType.class
 com\server\calc\repository\RepositoryDataRegistry.class
 com\server\calc\controller\auth0\LogoutHandler.class
 com\server\calc\service\ServiceDataRegistry.class
+com\server\calc\controller\RestControllerApis.class
 com\server\calc\dto\DataResult.class
 com\server\calc\repository\RepositoryDataUsers.class
 com\server\calc\controller\HomeController.class

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,11 +66,17 @@ public class ControllerCalc {
     @RequestMapping("/searchProducts")
     public String searchProduct(long importId, boolean add, @AuthenticationPrincipal OidcUser principal, Model model) {
 
+        Date date = new Date();
+        SimpleDateFormat dateInput = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         if (importId == 4){
            return "calculoExcel";
         }
 
         if (importId == 5){
+            model.addAttribute("dateFormat", dateFormat.format(date));
+            model.addAttribute("date", dateInput.format(date));
             model.addAttribute("profile", principal.getClaims());
             if (add) {
                 model.addAttribute("add", "Agregado");
@@ -297,7 +305,7 @@ public class ControllerCalc {
     }
 
     @RequestMapping("/registryProduct")
-    public String registryProducts(@ModelAttribute("dataRegistry") @Valid DataRegistry dataRegistry, Model model, @AuthenticationPrincipal OidcUser principal){
+    public String registryProducts(@ModelAttribute("dataRegistry") @Valid DataRegistry dataRegistry, Model model){
         try{
             serviceDataRegistry.saveDataRegistry(dataRegistry);
         }catch (Exception ex){
