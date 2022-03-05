@@ -21,5 +21,5 @@ public class DataFeatures {
     private String description;
     private String value;
     private long menunumber;
-    private String key_menu;
+    private String keymenu;
 }

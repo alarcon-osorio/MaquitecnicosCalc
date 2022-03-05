@@ -1,0 +1,108 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <a th:href="@{/adminFeatures}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2 align="center">Editar parametros y opciones del programa</h2><br>
+        <div th:if="${edit} == 'Editado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
+            <strong>Exito!</strong> Editado exitosamente.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="abs-center">
+            <form th:action="@{/editFeatures}" class="border p-3 form" method="POST">
+                <div class="mb-3">
+                    <label for="menu" class="form-label">Menú</label>
+                    <input type="hidden" class="form-control" id="id" name="id" th:value="${dataFeatures.id}" readonly>
+                    <Select th:if="${#strings.isEmpty(dataFeatures.menu)}" class="form-control" name="menu" id="menuSelect" required >
+                        <option value="">seleccione</option>
+                        <option th:each="dataFeaturesDistinctMenu : ${dataFeaturesDistinctMenu}" th:value="${dataFeaturesDistinctMenu}" th:text="${dataFeaturesDistinctMenu}"></option>
+                    </select>
+                    <input th:if="${not #strings.isEmpty(dataFeatures.menu)}" type="text" class="form-control" id="menu" name="menu" th:value="${dataFeatures.menu}" readonly >
+                </div>
+                <div class="mb-3">
+                    <label for="menunumber" class="form-label">Número de posición menú</label>
+                    <input th:if="${dataFeatures.menunumber == 0}" class="form-control" name="menunumber" id="menuNumberInput" readonly>
+                    <input th:if="${dataFeatures.menunumber != 0}" type="number" class="form-control" id="menunumber" name="menunumber" th:value="${dataFeatures.menunumber}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="module" class="form-label">Módulo</label>
+                    <input th:if="${#strings.isEmpty(dataFeatures.module)}" class="form-control" name="module" id="moduleInput" readonly>
+                    <input th:if="${not #strings.isEmpty(dataFeatures.module)}" type="text" class="form-control" id="module" name="module" th:value="${dataFeatures.module} == 'calc' ? 'Calculadora' : 'Administración'" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descripción</label>
+                    <input type="text" class="form-control" id="description" name="description" required th:value="${dataFeatures.description}">
+                </div>
+                <div class="mb-3">
+                    <label for="value" class="form-label">Valor</label>
+                    <input type="text" class="form-control" id="value" name="value" th:value="${dataFeatures.value}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="keymenu" class="form-label">Llave</label>
+                    <Select th:if="${#strings.isEmpty(dataFeatures.keymenu)}" class="form-control" name="keymenu" required>
+                        <option value="">seleccione</option>
+                        <option th:each="dataFeaturesDistinctKeyMenu : ${dataFeaturesDistinctKeyMenu}" th:value="${dataFeaturesDistinctKeyMenu}" th:text="${dataFeaturesDistinctKeyMenu}"></option>
+                    </select>
+                    <input th:if="${not #strings.isEmpty(dataFeatures.keymenu)}" type="text" class="form-control" id="keymenu" name="keymenu" th:value="${dataFeatures.keymenu}" readonly>
+                </div>
+                <button type="submit" class="btn btn-success float-right">Editar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $("#edit").fadeOut(2000);
+        },2000);
+    });
+
+    $("#menuSelect").change(function(){
+      var menuSelect = $("#menuSelect").val();
+        //Retorma menunumber
+        $.ajax({
+            url : 'api/getDataFeaturesMenuNumber',
+            data : {menu : menuSelect},
+            type : 'GET',
+            dataType : 'json',
+            success : function(json) {
+                var menuNumber = json;
+                var inputMenuNumber = $("#menuNumberInput");
+                inputMenuNumber.val(menuNumber);
+            },
+            error : function(xhr, status) {
+                alert('Existe un problema');
+            }
+        })
+
+        //Retorma module
+        $.ajax({
+            url : 'api/getDataFeaturesModule',
+            data : {menu : menuSelect},
+            type : 'GET',
+            //dataType : 'json',
+            success : function(data) {
+                console.log(data);
+                var module = data;
+                var inputModule = $("#moduleInput");
+                inputModule.val(module);
+            },
+            error : function(xhr, status) {
+                alert('Existe un problema');
+            }
+        })
+
+    });
+
+</script>
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>

@@ -1,0 +1,52 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <a th:href="@{/newFeatures}" class="btn btn-outline-success">Agregar</a>
+            <a th:href="@{/admin}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Menú</th>
+                <th scope="col"># Menú</th>
+                <th scope="col">Módulo</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Llave</th>
+                <th scope="col">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dataFeaturesList, iter : ${dataFeaturesList}">
+                <th scope="row" th:text="${iter.index} + 1"></th>
+                <th th:text="${dataFeaturesList.id}" style="display:none"></th>
+                <td th:text="${dataFeaturesList.menu}"></td>
+                <td th:text="${dataFeaturesList.menunumber}"></td>
+                <td th:text="${dataFeaturesList.module}"></td>
+                <td th:text="${dataFeaturesList.description}"></td>
+                <td th:text="${dataFeaturesList.value}"></td>
+                <td th:text="${dataFeaturesList.keymenu}"></td>
+                <td>
+                    <center>
+                        <div class="btn-group">
+                            <a th:href="@{/viewFeatures(id=${dataFeaturesList.id})}" th:text="Editar" class="btn btn-success"></a>
+                            <a th:href="@{/deleteFeatures(id=${dataFeaturesList.id})}" class="btn btn-danger" th:text="Eliminar"></a>
+                        </div>
+                    </center>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>

@@ -44,9 +44,7 @@
                         <label for="reason" class="form-label">Motivo</label>
                         <select class="form-control" id="reason" name="reason" required>
                             <option value="">Seleccione...</option>
-                            <option value="Agotado">Agotado</option>
-                            <option value="No importado">No importado</option>
-                            <option value="No importado">Sugerencia asesor</option>
+                            <option th:each="dataFeaturesReason : ${dataFeaturesReason}" th:value="${dataFeaturesReason.value}" th:text="${dataFeaturesReason.value}"></option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -61,13 +59,7 @@
                         <label for="brand" class="form-label">Marca sugerida a importar</label>
                         <select class="form-control" id="brand" name="brand" required>
                             <option value="">Seleccione...</option>
-                            <option value="SAMPA">SAMPA</option>
-                            <option value="DT Spare Parts">DT Spare Parts</option>
-                            <option value="HD">HD</option>
-                            <option value="AerDiesel">AerDiesel</option>
-                            <option value="Cheeft">Cheeft</option>
-                            <option value="TAS">TAS</option>
-                            <option value="Original">Original</option>
+                            <option th:each="dataFeaturesBrand : ${dataFeaturesBrand}" th:value="${dataFeaturesBrand.value}" th:text="${dataFeaturesBrand.value}"></option>
                         </select>
                     </div>
                     <div class="mb-3">

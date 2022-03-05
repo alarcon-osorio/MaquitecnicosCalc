@@ -14,7 +14,39 @@ public class ServiceDataFeatures {
     RepositoryDataFestures repositoryDataFestures;
 
     public List<DataFeatures> getDataFeatures(String module, long menunumber, String keymenu){
-        return null;
+        return repositoryDataFestures.findDataFeatures(module, menunumber, keymenu);
+    }
+
+    public List<DataFeatures> getAllDataFeatures(){
+        return repositoryDataFestures.findAll();
+    }
+
+    public DataFeatures getOneDataFeatures(long id){
+        return repositoryDataFestures.findById(id).get();
+    }
+
+    public void updateDatafeatures(DataFeatures dataFeatures){
+        repositoryDataFestures.save(dataFeatures);
+    }
+
+    public List<String> getDistinctMenu(){
+        return repositoryDataFestures.findDistincMenu();
+    }
+
+    public List<String> getDistinctKeyMenu(){
+        return repositoryDataFestures.findDistinctKeyMenu();
+    }
+
+    public Long getDataFeaturesMenuNumber(String menu){
+        return repositoryDataFestures.findDataFeaturesMenuNumber(menu);
+    }
+
+    public String getDataFeaturesModule(String menu){
+        return repositoryDataFestures.findDataFeaturesModule(menu);
+    }
+
+    public void deleteDatafeatures(Long id){
+        repositoryDataFestures.deleteById(id);
     }
 
 }

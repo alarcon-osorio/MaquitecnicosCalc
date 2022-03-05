@@ -1,0 +1,38 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Registro</h5>
+                </div>
+                <div class="modal-body">
+                    ¿Esta seguro que desea eliminar el registro? <br><br>
+                    <h6 th:text="'Menú: ' + ${dataFeatures.menu}"></h6>
+                    <h6 th:text="'Valor: ' + ${dataFeatures.value}"></h6>
+                    <h6 th:text="'Descripción: ' + ${dataFeatures.description}"></h6><br>
+                    Esta acción no se puede devolver
+                </div>
+                <div class="modal-footer">
+                    <a th:href="@{/adminFeatures}" type="button" class="btn btn-warning">Cancelar</a>
+                    <a th:href="@{/deleteFeatures(id=${id})}+'&delete=true'"  type="button" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function() {
+        $('.modal-body').load('content.html',function(){
+            $('#exampleModal').modal({show:true});
+        });
+        $('#exampleModal').modal({backdrop: 'static', keyboard: false})
+    });
+</script>
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>

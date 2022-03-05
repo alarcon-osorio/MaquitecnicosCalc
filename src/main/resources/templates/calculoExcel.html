@@ -37,36 +37,53 @@
 //Multiselect Search
 $(document).ready(function() {
     var select = $("#dropdown");
-    var init;
-    var end;   //102489
 
-    myFunct(0, 102489);
+    var module = 'calc';
+    var menunumber = 4;
+    var keymenu = 'ini-end';
 
-    function myFunct(init, end){
-        console.log(end);
-        $.ajax({
-        url : 'api/getProductsLimit',
-        data : {init, end},
+    $.ajax({
+        url : 'api/getDataFeatures',
+        data : {module, menunumber, keymenu},
         type : 'GET',
         dataType : 'json',
         success : function(json) {
-            $(json).each(function(i, v){
-                select.append('<option value="' + v.reference + '- ' + v.description + '- ' + v.amount + '- ' + v.importId + '- '  + '">' + v.id + ' - ' + 'Referencia: ' + v.reference + '- ' + '- Nombre: ' + v.description + '- Cantidad: ' + v.amount + '</option>');
-            })
+            ini = json[0].value;
+            end = json[1].value;
 
-            //Asigna la clase selectpicker al id
-            $('#dropdown').selectpicker();
+            myFunc(ini, end);
 
-            $(".loader-page").css({visibility:"hidden",opacity:"0"})
         },
         error : function(xhr, status) {
             $(".loader-page").css({visibility:"hidden",opacity:"0"})
             alert('Existe un problema');
         }
-        });
-     }
+    })
 
+    function myFunc(init, end){
+        $.ajax({
+        url : 'api/getProductsLimit',
+        data : {init, end},
+        type : 'GET',
+        dataType : 'json',
+            success : function(json) {
+                $(json).each(function(i, v){
+                    select.append('<option value="' + v.reference + '- ' + v.description + '- ' + v.amount + '- ' + v.importId + '- '  + '">' + v.id + ' - ' + 'Referencia: ' + v.reference + '- ' + '- Nombre: ' + v.description + '- Cantidad: ' + v.amount + '</option>');
+                })
+
+                //Assign class select picker id
+                $('#dropdown').selectpicker();
+
+                $(".loader-page").css({visibility:"hidden",opacity:"0"})
+            },
+            error : function(xhr, status) {
+                $(".loader-page").css({visibility:"hidden",opacity:"0"})
+                alert('Existe un problema');
+            }
+        });
+    }
 })
+
 </script>
 
 <footer th:insert="includes/footer :: footer"></footer>

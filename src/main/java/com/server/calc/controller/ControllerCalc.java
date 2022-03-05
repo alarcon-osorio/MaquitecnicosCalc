@@ -44,6 +44,9 @@ public class ControllerCalc {
     @Autowired
     ServiceDataRegistry serviceDataRegistry;
 
+    @Autowired
+    ServiceDataFeatures serviceDataFeatures;
+
     @GetMapping("/calc")
     public String index(Model model, @AuthenticationPrincipal OidcUser principal){
         if (principal != null) {
@@ -75,6 +78,10 @@ public class ControllerCalc {
         }
 
         if (importId == 5){
+            List<DataFeatures> dataFeaturesReason = serviceDataFeatures.getDataFeatures("calc", importId,  "select-motivo");
+            List<DataFeatures> dataFeaturesBrand = serviceDataFeatures.getDataFeatures("calc", importId,  "select-marca");
+            model.addAttribute("dataFeaturesReason", dataFeaturesReason);
+            model.addAttribute("dataFeaturesBrand", dataFeaturesBrand);
             model.addAttribute("dateFormat", dateFormat.format(date));
             model.addAttribute("date", dateInput.format(date));
             model.addAttribute("profile", principal.getClaims());

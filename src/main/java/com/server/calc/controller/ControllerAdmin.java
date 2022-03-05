@@ -1,10 +1,7 @@
 package com.server.calc.controller;
 
 import com.server.calc.dto.DataCalcJoin;
-import com.server.calc.entity.DataCalc;
-import com.server.calc.entity.DataProduct;
-import com.server.calc.entity.DataRegistry;
-import com.server.calc.entity.DataUsers;
+import com.server.calc.entity.*;
 import com.server.calc.exporter.ExcelExportUnlisted;
 import com.server.calc.service.*;
 import lombok.extern.log4j.Log4j2;
@@ -16,10 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -30,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Controller
@@ -53,6 +48,9 @@ public class ControllerAdmin {
 
     @Autowired
     ServiceDataRegistry serviceDataRegistry;
+
+    @Autowired
+    ServiceDataFeatures serviceDataFeatures;
 
     @GetMapping("/admin")
     public String admin(Model model, @AuthenticationPrincipal OidcUser principal) {
@@ -138,6 +136,60 @@ public class ControllerAdmin {
         ExcelExportUnlisted excelExporter = new ExcelExportUnlisted(dataRegistries);
 
         excelExporter.export(response);
+    }
+
+    @GetMapping("/adminFeatures")
+    public String features(Model model){
+        List<DataFeatures> dataFeaturesList = serviceDataFeatures.getAllDataFeatures();
+        model.addAttribute("dataFeaturesList", dataFeaturesList);
+        return "adminFeatures";
+    }
+
+    @GetMapping("/viewFeatures")
+    public String viewFeatures(long id, Model model, boolean update){
+        DataFeatures dataFeatures = serviceDataFeatures.getOneDataFeatures(id);
+        if (update){
+            model.addAttribute("edit", "Editado");
+        }
+        model.addAttribute("dataFeatures", dataFeatures);
+        return "viewFeatures";
+    }
+
+    @RequestMapping("/editFeatures")
+    public String editFeatures(Model model, DataFeatures dataFeatures){
+        if (dataFeatures.getModule().equals("Calculadora") || dataFeatures.getModule().equals("calc")) {
+            dataFeatures.setModule("calc");
+        }else{
+            dataFeatures.setModule("admin");
+        }
+        serviceDataFeatures.updateDatafeatures(dataFeatures);
+        return "redirect:viewFeatures?id=" + dataFeatures.getId() + "&update=true";
+    }
+
+    @RequestMapping("/deleteFeatures")
+    public String deleteFeatures(Model model, Long id, boolean delete){
+        DataFeatures dataFeatures = serviceDataFeatures.getOneDataFeatures(id);
+        model.addAttribute("id", id);
+        model.addAttribute("dataFeatures", dataFeatures);
+
+        if (delete){
+            serviceDataFeatures.deleteDatafeatures(id);
+            return "redirect:adminFeatures";
+        }
+
+        return "confirmDelete";
+
+    }
+
+    @RequestMapping("/newFeatures")
+    public String newFeatures(Model model, DataFeatures dataFeatures){
+        List<String> dataFeaturesDistinctMenu = serviceDataFeatures.getDistinctMenu();
+        List<String> dataFeaturesDistinctKeyMenu = serviceDataFeatures.getDistinctKeyMenu();
+        List<DataFeatures> dataFeaturesList = serviceDataFeatures.getAllDataFeatures();
+        model.addAttribute("dataFeaturesDistinctMenu", dataFeaturesDistinctMenu);
+        model.addAttribute("dataFeaturesDistinctKeyMenu", dataFeaturesDistinctKeyMenu);
+        model.addAttribute("dataFeaturesList", dataFeaturesList);
+        return "viewFeatures";
     }
 
 }
