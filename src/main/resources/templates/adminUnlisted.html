@@ -14,7 +14,7 @@
         </div>
     </div>
     <h2 align="center">Reporte no Cotizados</h2><br>
-    <div class="row">
+    <div class="row" id="div-table">
         <table id="data_calc" class="table table-striped">
             <thead>
             <tr>
@@ -29,6 +29,7 @@
                 <th scope="col">Marca sugerida</th>
                 <th scope="col">Usuario</th>
                 <th scope="col">Cliente</th>
+                <th scope="col">Observaciones</th>
             </tr>
             </thead>
             <tbody>
@@ -44,6 +45,7 @@
                 <td th:text="${dataRegistryList.brand}"></td>
                 <td th:text="${dataRegistryList.user}"></td>
                 <td th:text="${dataRegistryList.client}"></td>
+                <td th:text="${dataRegistryList.obs}"></td>
             </tr>
             </tbody>
         </table>

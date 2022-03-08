@@ -10,9 +10,9 @@
         </div>
     </div>
     <div class="container">
-        <h2 align="center">Editar parametros y opciones del programa</h2><br>
+        <h2 align="center">Parametros y opciones del programa</h2><br>
         <div th:if="${edit} == 'Editado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
-            <strong>Exito!</strong> Editado exitosamente.
+            <strong>Exito!</strong> Guardado exitosamente.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -54,7 +54,7 @@
                     </select>
                     <input th:if="${not #strings.isEmpty(dataFeatures.keymenu)}" type="text" class="form-control" id="keymenu" name="keymenu" th:value="${dataFeatures.keymenu}" readonly>
                 </div>
-                <button type="submit" class="btn btn-success float-right">Editar</button>
+                <button type="submit" class="btn btn-success float-right">Guardar</button>
             </form>
         </div>
     </div>

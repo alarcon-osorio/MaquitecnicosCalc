@@ -102,3 +102,7 @@
 .form {
   width: 600px;
 }
+
+#div-table {
+     overflow:scroll;
+}

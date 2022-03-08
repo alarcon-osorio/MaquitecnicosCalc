@@ -47,6 +47,7 @@ public class ExcelExportUnlisted {
         createCell(row, 8, "Marca sugerida");
         createCell(row, 9, "Usuario");
         createCell(row, 10, "Cliente");
+        createCell(row, 11, "Observaciones");
 
     }
 
@@ -94,6 +95,7 @@ public class ExcelExportUnlisted {
             createCell(row, columnCount++, data.getBrand());
             createCell(row, columnCount++, data.getUser());
             createCell(row, columnCount++, data.getClient());
+            createCell(row, columnCount++, data.getObs());
 
         }
     }

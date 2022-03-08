@@ -29,5 +29,6 @@ public class DataRegistry {
     private String brand;
     public String user;
     public String client;
+    public String obs;
 
 }
