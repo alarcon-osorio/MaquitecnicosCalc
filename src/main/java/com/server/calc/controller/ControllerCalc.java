@@ -51,7 +51,7 @@ public class ControllerCalc {
     public String index(Model model, @AuthenticationPrincipal OidcUser principal){
         if (principal != null) {
             try{
-                DataUsers dataUsers = serviceDataUsers.geyByEmail(principal.getEmail());
+                DataUsers dataUsers = serviceDataUsers.getByEmail(principal.getEmail());
                 if (dataUsers.getProfile().equals("admin")){
                     model.addAttribute("admin", dataUsers.getProfile());
                 }

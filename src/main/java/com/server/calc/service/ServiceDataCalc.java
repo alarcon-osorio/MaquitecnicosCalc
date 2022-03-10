@@ -33,4 +33,12 @@ public class ServiceDataCalc {
         return dataCalDTO;
     }
 
+    public void updateDataCalc(DataCalc dataCalc){
+        repositoryDataCalc.save(dataCalc);
+    }
+
+    public void deleteDatacalc(long id){
+        repositoryDataCalc.deleteById(id);
+    }
+
 }

@@ -13,6 +13,4 @@ public interface RepositoryDataUsers extends JpaRepository<DataUsers, Long> {
     @Query(value = "select * from datausers where email = ?1", nativeQuery = true)
     DataUsers findByEmail(String email);
 
-    @Query(value = "select * from datausers", nativeQuery = true)
-    List<DataUsers> findAllUsers();
 }

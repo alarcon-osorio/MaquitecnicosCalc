@@ -8,13 +8,24 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RepositoryDataCalcJoin extends JpaRepository<DataCalcJoin, Long> {
+public interface RepositoryDataTrm extends JpaRepository<DataCalcJoin, Long> {
     @Query(value = "SELECT t1.id, " +
+            "t1.iddatastatic, " +
             "t2.concept, " +
             "t1.value_cop, " +
             "t1.legalization " +
             "FROM datacalc t1 " +
             "left join datastatic t2 on t1.iddatastatic = t2.id", nativeQuery = true)
-    public List<DataCalcJoin> findDataCalcJoin();
+    List<DataCalcJoin> findDataCalcJoin();
+
+    @Query(value = "SELECT t1.id, " +
+            "t1.iddatastatic, " +
+            "t2.concept, " +
+            "t1.value_cop, " +
+            "t1.legalization " +
+            "FROM datacalc t1 " +
+            "left join datastatic t2 on t1.iddatastatic = t2.id " +
+            "where t1.id = ?1", nativeQuery = true)
+    DataCalcJoin findDataCalcJoinById(long id);
 
 }

@@ -47,10 +47,4 @@ public class RestControllerApis {
         return serviceDataFeatures.getDataFeaturesModule(menu);
     }
 
-    @DeleteMapping("/deleteFeatures/{id}")
-    public void deleteFeatures(@PathVariable("id") Long id){
-        //serviceDataFeatures.deleteDatafeatures(id);
-        log.info(id);
-    }
-
 }

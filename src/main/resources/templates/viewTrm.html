@@ -1,0 +1,49 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <a th:href="@{/adminTrm}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2 align="center">Parametros TRM</h2><br>
+        <div th:if="${edit} == 'Editado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
+            <strong>Exito!</strong> Guardado exitosamente.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="abs-center">
+        <form th:action="@{/updateTrm}" class="border p-3 form" method="POST">
+            <div class="mb-3">
+                <input type="hidden" class="form-control" id="id" name="id" th:value="${dataTrm.id}" readonly >
+                <input type="hidden" class="form-control" id="idDatastatic" name="idDatastatic" th:value="${dataTrm.idDatastatic}" readonly >
+                <label for="concept" class="form-label">Tipo de importación</label>
+                <input type="text" class="form-control" id="concept" name="concept" th:value="${dataTrm.concept}" readonly >
+            </div>
+            <div class="mb-3">
+                <label for="valueCop" class="form-label">Valor TRM ($COP)</label>
+                <input type="number" class="form-control" id="valueCop" name="valueCop" th:value="${dataTrm.valueCop}" >
+            </div>
+            <div class="mb-3">
+                <label for="legalization" class="form-label">Legalización (% Porcentaje)</label>
+                <input type="number" class="form-control" id="legalization" name="legalization" th:value="${dataTrm.legalization}" >
+            </div>
+            <button type="submit" class="btn btn-success float-right">Guardar</button>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $("#edit").fadeOut(2000);
+        },2000);
+    });
+</script>
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>

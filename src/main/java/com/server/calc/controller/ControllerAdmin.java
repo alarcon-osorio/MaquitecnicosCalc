@@ -4,6 +4,7 @@ import com.server.calc.dto.DataCalcJoin;
 import com.server.calc.entity.*;
 import com.server.calc.exporter.ExcelExportUnlisted;
 import com.server.calc.service.*;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,16 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Controller
 @Log4j2
@@ -41,7 +38,7 @@ public class ControllerAdmin {
     ServiceDataStatic serviceDataStatic;
 
     @Autowired
-    ServiceDataCalcJoin serviceDataCalcJoin;
+    ServiceDataTrm serviceDataTrm;
 
     @Autowired
     ServiceDataProduct serviceDataProduct;
@@ -56,7 +53,7 @@ public class ControllerAdmin {
     public String admin(Model model, @AuthenticationPrincipal OidcUser principal) {
         if (principal != null) {
             try{
-                DataUsers dataUsers = serviceDataUsers.geyByEmail(principal.getEmail());
+                DataUsers dataUsers = serviceDataUsers.getByEmail(principal.getEmail());
                 if (dataUsers.getProfile().equals("admin")){
                     model.addAttribute("admin", dataUsers.getProfile());
                     model.addAttribute("profile", principal.getClaims());
@@ -75,42 +72,6 @@ public class ControllerAdmin {
             }
         }
         return "redirect:calc";
-    }
-
-    @GetMapping("/adminTrm")
-    public String trm(Model model){
-        List<DataCalcJoin> trmList = serviceDataCalcJoin.getDataCalcJoinList();
-        log.info("Lista: " + trmList);
-        model.addAttribute("trmList", trmList);
-        return "adminTrm";
-    }
-
-    @PutMapping("/updateTrm")
-    public String updateTrm(Model model){
-        List<DataCalcJoin> trmList = serviceDataCalcJoin.getDataCalcJoinList();
-        log.info("Lista: " + trmList);
-        model.addAttribute("trmList", trmList);
-        return "adminTrm";
-    }
-
-    @RequestMapping("/adminProducts")
-    public String adminProducts(Model model, Integer pageNum){
-        if(pageNum==null){
-            pageNum=1;
-        }
-        Pageable pageable = PageRequest.of(pageNum-1,5);
-        Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
-        log.info("Lista de Productos: " + productList);
-        model.addAttribute("productList", productList);
-        return "adminProducts";
-    }
-
-    @GetMapping("/dataUsers")
-    public String dataUsers(Model model){
-        List<DataUsers> dataUsersList = serviceDataUsers.getAllUsers();
-        log.info("Lista de Usuarios: " + dataUsersList);
-        model.addAttribute("dataUsers", dataUsersList);
-        return "adminUsers";
     }
 
     @GetMapping("/adminUnlisted")
@@ -136,6 +97,94 @@ public class ControllerAdmin {
         ExcelExportUnlisted excelExporter = new ExcelExportUnlisted(dataRegistries);
 
         excelExporter.export(response);
+    }
+
+    @GetMapping("/adminTrm")
+    public String trm(Model model){
+        List<DataCalcJoin> trmList = serviceDataTrm.getDataTrmJoinList();
+        log.info("Lista: " + trmList);
+        model.addAttribute("trmList", trmList);
+        return "adminTrm";
+    }
+
+    @GetMapping("/viewTrm")
+    public String viewTrm(long id, Model model, boolean update){
+        DataCalcJoin dataTrm = serviceDataTrm.getOneDataTrmJoin(id);
+        if (update){
+            model.addAttribute("edit", "Editado");
+        }
+        model.addAttribute("dataTrm", dataTrm);
+        return "viewTrm";
+    }
+
+    @RequestMapping("/updateTrm")
+    public String updateTrm(Model model, DataCalcJoin dataCalcJoin){
+        log.info(dataCalcJoin);
+        DataCalc dataCalc = new DataCalc();
+        dataCalc.setId(dataCalcJoin.getId());
+        dataCalc.setIdDataStatic(dataCalcJoin.getIdDatastatic());
+        dataCalc.setValueCop(dataCalcJoin.getValueCop());
+        dataCalc.setLegalization(dataCalcJoin.getLegalization());
+        log.info(dataCalc);
+        serviceDataCalc.updateDataCalc(dataCalc);
+        return "redirect:viewTrm?id=" + dataCalc.getId() + "&update=true";
+    }
+
+    @RequestMapping("/deleteTrm")
+    public String deleteTrm(long id, Model model){
+        log.info(id);
+        serviceDataCalc.deleteDatacalc(id);
+        return "redirect:adminTrm";
+    }
+
+    @RequestMapping("/adminProducts")
+    public String adminProducts(Model model, Integer pageNum){
+        if(pageNum==null){
+            pageNum=1;
+        }
+        Pageable pageable = PageRequest.of(pageNum-1,5);
+        Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
+        log.info("Lista de Productos: " + productList);
+        model.addAttribute("productList", productList);
+        return "adminProducts";
+    }
+
+    @GetMapping("/dataUsers")
+    public String dataUsers(Model model){
+        List<DataUsers> dataUsersList = serviceDataUsers.getAllUsers();
+        log.info("Lista de Usuarios: " + dataUsersList);
+        model.addAttribute("dataUsers", dataUsersList);
+        return "adminUsers";
+    }
+
+    @GetMapping("/viewUsers")
+    public String viewUsers(Model model, long id, boolean update){
+        DataUsers dataUsers = serviceDataUsers.getDataUserById(id);
+        log.info(dataUsers);
+        if (update){
+            model.addAttribute("edit", "Editado");
+        }
+        model.addAttribute("dataUsers", dataUsers);
+        return "viewUsers";
+    }
+
+    @RequestMapping("/newUsers")
+    public String newUsers(Model model, DataUsers dataUsers){
+        return "viewUsers";
+    }
+
+    @RequestMapping("/updateUsers")
+    public String viewUsers(Model model, DataUsers dataUsers){
+        log.info(dataUsers);
+        serviceDataUsers.updateUsers(dataUsers);
+        return "redirect:viewUsers?id=" + dataUsers.getId() + "&update=true";
+    }
+
+    @RequestMapping("/deleteUsers")
+    public String deleteUsers(Model model, long id){
+        log.info(id);
+        serviceDataUsers.deleteUsers(id);
+        return "redirect:dataUsers";
     }
 
     @GetMapping("/adminFeatures")
