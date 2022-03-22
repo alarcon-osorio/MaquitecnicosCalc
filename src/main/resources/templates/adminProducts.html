@@ -32,9 +32,10 @@
                 <td th:text="${productList.amount}"></td>
                 <td>
                     <center>
-                        <a href="#" th:text="Editar" class="btn btn-success"></a>
-                        ||
-                        <a href="#" th:text="Eliminar" class="btn btn-danger"></a>
+                        <div class="btn-group">
+                            <a href="#" th:text="Editar" class="btn btn-success"></a>
+                            <a th:href="@{/delete(idProduct=${productList.id})}" class="btn btn-danger" th:text="Eliminar"></a>
+                        </div>
                     </center>
 
                 </td>

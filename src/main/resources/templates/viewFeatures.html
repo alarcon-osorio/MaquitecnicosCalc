@@ -22,7 +22,7 @@
                 <div class="mb-3">
                     <label for="menu" class="form-label">Menú</label>
                     <input type="hidden" class="form-control" id="id" name="id" th:value="${dataFeatures.id}" readonly>
-                    <Select th:if="${#strings.isEmpty(dataFeatures.menu)}" class="form-control" name="menu" id="menuSelect" required >
+                    <select th:if="${#strings.isEmpty(dataFeatures.menu)}" class="form-control" name="menu" id="menuSelect" required >
                         <option value="">seleccione</option>
                         <option th:each="dataFeaturesDistinctMenu : ${dataFeaturesDistinctMenu}" th:value="${dataFeaturesDistinctMenu}" th:text="${dataFeaturesDistinctMenu}"></option>
                     </select>

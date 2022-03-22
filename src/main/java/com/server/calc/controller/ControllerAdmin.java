@@ -215,15 +215,55 @@ public class ControllerAdmin {
         return "redirect:viewFeatures?id=" + dataFeatures.getId() + "&update=true";
     }
 
-    @RequestMapping("/deleteFeatures")
-    public String deleteFeatures(Model model, Long id, boolean delete){
-        DataFeatures dataFeatures = serviceDataFeatures.getOneDataFeatures(id);
-        model.addAttribute("id", id);
-        model.addAttribute("dataFeatures", dataFeatures);
+    @RequestMapping("/delete")
+    public String deleteFeatures(Model model,
+                                 Long idFeature, boolean deleteFeature,
+                                 Long idUsers, boolean deleteUsers,
+                                 Long idTrm, boolean deleteTrm,
+                                 Long idProduct, boolean deleteProduct){
 
-        if (delete){
-            serviceDataFeatures.deleteDatafeatures(id);
+        if (idFeature != null){
+            model.addAttribute("id", idFeature);
+            model.addAttribute("type", "adminFeatures");
+            model.addAttribute("delete", "deleteFeature");
+        }
+
+        if (deleteFeature){
+            serviceDataFeatures.deleteDatafeatures(idFeature);
             return "redirect:adminFeatures";
+        }
+
+        if (idUsers != null){
+            model.addAttribute("id", idUsers);
+            model.addAttribute("type", "dataUsers");
+            model.addAttribute("delete", "deleteUsers");
+        }
+
+        if (deleteUsers){
+            serviceDataUsers.deleteUsers(idUsers);
+            return "redirect:dataUsers";
+        }
+
+        if (idTrm != null){
+            model.addAttribute("id", idTrm);
+            model.addAttribute("type", "adminTrm");
+            model.addAttribute("delete", "deleteTrm");
+        }
+
+        if (deleteTrm){
+            serviceDataCalc.deleteDatacalc(idTrm);
+            return "redirect:adminTrm";
+        }
+
+        if (idProduct != null){
+            model.addAttribute("id", idProduct);
+            model.addAttribute("type", "adminProducts");
+            model.addAttribute("delete", "deleteProduct");
+        }
+
+        if (deleteProduct){
+            //Delete Product - Service
+            return "redirect:adminProducts";
         }
 
         return "confirmDelete";
