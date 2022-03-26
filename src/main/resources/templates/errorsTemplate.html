@@ -6,10 +6,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Error 404 - NOT FOUND</h5>
+                <h5 class="modal-title">Error - NOT FOUND</h5>
             </div>
             <div class="modal-body">
-                <p  th:text="'Error 404 - NOT FOUND ' + ${#strings.substringAfter(error, '-')}  + ' Excepción: ' + ${error}  + ' Producto duplicado o no existe' " ></p>
+                <p  th:text="'Error ' + ${#strings.substringAfter(error, '-')}  + ' Excepción: ' + ${error}  + ' Verificar logs de registro' " ></p>
             </div>
             <div class="modal-footer">
                 <a th:href="@{/calc}"  class="btn btn-warning" data-dismiss="modal">Ir a Home</a>

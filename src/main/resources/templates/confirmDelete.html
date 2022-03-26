@@ -12,17 +12,11 @@
                 </div>
                 <div class="modal-body">
                     ¿Esta seguro que desea eliminar el registro? <br><br>
-                    <h6 th:text="'Id: ' + ${id}"></h6>
-                    <h6 th:text="'Tipo: ' + ${type}"></h6>
-                    <h6 th:text="'Delete: ' + '&' + ${delete}"></h6>
-                    <!--<h6 th:text="'Menú: ' + ${dataFeatures.menu}"></h6>
-                    <h6 th:text="'Valor: ' + ${dataFeatures.value}"></h6>
-                    <h6 th:text="'Descripción: ' + ${dataFeatures.description}"></h6><br>-->
                     Esta acción no se puede devolver
                 </div>
                 <div class="modal-footer">
                     <a th:href="@{'/' + ${type}}" type="button" class="btn btn-warning">Cancelar</a>
-                    <a th:href="@{/delete(idFeature=${id})} + '&' + ${delete} + '=true'"  type="button" class="btn btn-danger">Eliminar</a>
+                    <a th:href="@{/delete(${params}=${id})} + '&' + ${delete} + '=true'"  type="button" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>

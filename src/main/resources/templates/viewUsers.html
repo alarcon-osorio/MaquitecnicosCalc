@@ -10,24 +10,42 @@
         </div>
     </div>
     <div class="container">
-        <h2 align="center">Datos de Usuario</h2><br>
+        <h2 align="center">Datos de Usuario</h2>
+        <p th:text="${hola}"></p>
         <div th:if="${edit} == 'Editado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
             <strong>Exito!</strong> Guardado exitosamente.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+        <div th:if="${conflict} == 'Err Email'" class="alert alert-danger alert-dismissible fade show" role="alert" id="edit">
+            <strong>Sin Exito!</strong> Ya existe usuario con ese correo.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div th:if="${password} == 'Err password'" class="alert alert-Warning alert-dismissible fade show" role="alert" id="edit">
+            <strong>Sin Exito!</strong> Formato de contraseña incorrecto (Debe ser minimo de 8 Caracteres una mayuscula numeros y caracteres).
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
     <div class="abs-center">
-        <form th:action="@{/updateUsers}" class="border p-3 form" method="POST">
+        <form th:action="@{/saveUsers}" class="border p-3 form" method="POST">
             <div class="mb-3">
+                <input th:if="${#strings.isEmpty(dataUsers.email)}" type="hidden" class="form-control" name="type" value="add">
+                <input th:if="${not #strings.isEmpty(dataUsers.email)}" type="hidden" class="form-control" name="type" value="update">
+                <input type="hidden" class="form-control" name="authid" th:value="${dataUsers.authid}">
                 <input type="hidden" class="form-control" id="id" name="id" th:value="${dataUsers.id}">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" name="name" th:value="${dataUsers.name}" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" th:value="${dataUsers.email}" required>
+                <input th:if="${not #strings.isEmpty(dataUsers.email)}" type="email" class="form-control" name="email" th:value="${dataUsers.email}" readonly>
+                <input th:if="${#strings.isEmpty(dataUsers.email)}" type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="mb-3">
                 <label for="login" class="form-label">Login</label>
@@ -40,7 +58,6 @@
             <div class="mb-3">
                 <label for="profile" class="form-label">Perfil</label>
                 <select class="form-control" name="profile" id="profile" required>
-                    <option value="">Seleccione</option>
                     <option value="admin">admin</option>
                     <option value="user">user</option>
                 </select>
@@ -48,7 +65,6 @@
             <div class="mb-3">
                 <label for="state" class="form-label">Estado</label>
                 <select class="form-control" name="state" id="state" required>
-                    <option value="">Seleccione</option>
                     <option value="Activo">Activo</option>
                     <option value="Inactivo">Inactivo</option>
                 </select>

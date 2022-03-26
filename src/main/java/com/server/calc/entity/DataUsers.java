@@ -22,5 +22,6 @@ public class DataUsers {
     private String password;
     private String profile;
     private String state;
+    private String authid;
 
 }
