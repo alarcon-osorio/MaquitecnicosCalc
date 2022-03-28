@@ -63,8 +63,11 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="client" class="form-label">Cliente</label>
-                        <input type="text" class="form-control" id="client" name="client" placeholder="Ingresa la razón social o nombre de cliente" required>
+                        <label for="client" class="form-label">Cliente/Empresa</label>
+                        <select class="form-control"  name="client" id="client" required>
+                            <option value="">Seleccione...</option>
+                            <option th:each="dataClients : ${dataClients}" th:value="${dataClients.company}" th:text="${dataClients.company}"></option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="obs" class="form-label">Observaciones</label>

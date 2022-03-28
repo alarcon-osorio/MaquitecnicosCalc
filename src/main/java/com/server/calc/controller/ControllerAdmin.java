@@ -8,6 +8,7 @@ import com.server.calc.dto.NewUsersDTO;
 import com.server.calc.dto.UsersDTO;
 import com.server.calc.entity.*;
 import com.server.calc.exporter.ExcelExportUnlisted;
+import com.server.calc.repository.RepositoryDataClients;
 import com.server.calc.repository.RepositoryDataUsers;
 import com.server.calc.service.*;
 import lombok.extern.log4j.Log4j2;
@@ -19,12 +20,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
@@ -64,6 +63,9 @@ public class ControllerAdmin {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    ServiceDataClients serviceDataClients;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -72,22 +74,22 @@ public class ControllerAdmin {
     @GetMapping("/admin")
     public String admin(Model model, @AuthenticationPrincipal OidcUser principal) {
         if (principal != null) {
-            try{
+            try {
                 DataUsers dataUsers = serviceDataUsers.getByEmail(principal.getEmail());
-                if (dataUsers.getProfile().equals("admin")){
+                if (dataUsers.getProfile().equals("admin")) {
                     model.addAttribute("admin", dataUsers.getProfile());
                     model.addAttribute("profile", principal.getClaims());
                     List<DataCalc> dataCalcList = serviceDataCalc.getAll();
-                    if (!dataCalcList.isEmpty()){
-                        for (DataCalc dataCalc: dataCalcList) {
+                    if (!dataCalcList.isEmpty()) {
+                        for (DataCalc dataCalc : dataCalcList) {
                             model.addAttribute("trm", dataCalc.getValueCop());
                         }
                     }
                     return "admin";
-                }else{
+                } else {
                     return "redirect:calc";
                 }
-            }catch (NullPointerException ex){
+            } catch (NullPointerException ex) {
                 return "redirect:calc";
             }
         }
@@ -95,7 +97,7 @@ public class ControllerAdmin {
     }
 
     @GetMapping("/adminUnlisted")
-    public String ulisted(Model model){
+    public String ulisted(Model model) {
         List<DataRegistry> dataRegistryList = serviceDataRegistry.getDataRegistryAll();
         model.addAttribute("dataRegistryList", dataRegistryList);
         return "adminUnlisted";
@@ -120,7 +122,7 @@ public class ControllerAdmin {
     }
 
     @GetMapping("/adminTrm")
-    public String trm(Model model){
+    public String trm(Model model) {
         List<DataCalcJoin> trmList = serviceDataTrm.getDataTrmJoinList();
         log.info("Lista: " + trmList);
         model.addAttribute("trmList", trmList);
@@ -128,9 +130,9 @@ public class ControllerAdmin {
     }
 
     @GetMapping("/viewTrm")
-    public String viewTrm(long id, Model model, boolean update){
+    public String viewTrm(long id, Model model, boolean update) {
         DataCalcJoin dataTrm = serviceDataTrm.getOneDataTrmJoin(id);
-        if (update){
+        if (update) {
             model.addAttribute("edit", "Editado");
         }
         model.addAttribute("dataTrm", dataTrm);
@@ -138,7 +140,7 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/updateTrm")
-    public String updateTrm(Model model, DataCalcJoin dataCalcJoin){
+    public String updateTrm(Model model, DataCalcJoin dataCalcJoin) {
         log.info(dataCalcJoin);
         DataCalc dataCalc = new DataCalc();
         dataCalc.setId(dataCalcJoin.getId());
@@ -151,18 +153,18 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/deleteTrm")
-    public String deleteTrm(long id, Model model){
+    public String deleteTrm(long id, Model model) {
         log.info(id);
         serviceDataCalc.deleteDatacalc(id);
         return "redirect:adminTrm";
     }
 
     @RequestMapping("/adminProducts")
-    public String adminProducts(Model model, Integer pageNum){
-        if(pageNum==null){
-            pageNum=1;
+    public String adminProducts(Model model, Integer pageNum) {
+        if (pageNum == null) {
+            pageNum = 1;
         }
-        Pageable pageable = PageRequest.of(pageNum-1,5);
+        Pageable pageable = PageRequest.of(pageNum - 1, 5);
         Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
         log.info("Lista de Productos: " + productList);
         model.addAttribute("productList", productList);
@@ -182,9 +184,9 @@ public class ControllerAdmin {
 
         UsersDTO[] usersDTO = mapper.readValue(response.getBody(), UsersDTO[].class);
 
-        for(UsersDTO usersAdd: usersDTO) {
+        for (UsersDTO usersAdd : usersDTO) {
             DataUsers userExist = serviceDataUsers.getByEmail(usersAdd.getEmail());
-            if(userExist == null){
+            if (userExist == null) {
                 String name = usersAdd.getName();
                 String email = usersAdd.getEmail();
                 String login = usersAdd.getNickname();
@@ -203,18 +205,18 @@ public class ControllerAdmin {
     }
 
     @GetMapping("/viewUsers")
-    public String viewUsers(Model model, long id, boolean update, boolean duplicate, boolean password){
+    public String viewUsers(Model model, long id, boolean update, boolean duplicate, boolean password) {
         DataUsers dataUsers = serviceDataUsers.getDataUserById(id);
 
-        if (update){
+        if (update) {
             model.addAttribute("edit", "Editado");
         }
 
-        if (duplicate){
+        if (duplicate) {
             model.addAttribute("conflict", "Err Email");
         }
 
-        if (password){
+        if (password) {
             model.addAttribute("password", "Err password");
         }
 
@@ -223,12 +225,12 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/newUsers")
-    public String newUsers(Model model, DataUsers dataUsers, boolean password, boolean conflict){
-        if (password){
+    public String newUsers(Model model, DataUsers dataUsers, boolean password, boolean conflict) {
+        if (password) {
             model.addAttribute("password", "Err password");
         }
 
-        if (conflict){
+        if (conflict) {
             model.addAttribute("conflict", "Err Email");
         }
 
@@ -236,7 +238,7 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/saveUsers")
-    public String saveUsers(Model model, DataUsers dataUsers, String type){
+    public String saveUsers(Model model, DataUsers dataUsers, String type) {
 
         if (Objects.equals(type, "add")) {
             try {
@@ -272,7 +274,7 @@ public class ControllerAdmin {
                     return "redirect:viewUsers?id=" + dataUsers.getId() + "&update=true";
                 }
 
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 log.info("Error en registro: Por favor verificar campo incorrecto");
                 boolean conflict = ex.getMessage().contains("409");
                 boolean password = ex.getMessage().contains("PasswordStrengthError");
@@ -291,9 +293,9 @@ public class ControllerAdmin {
                 editUsersDTO.setNickname(dataUsers.getLogin());
                 editUsersDTO.setPassword(dataUsers.getPassword());
                 editUsersDTO.setConnection("Username-Password-Authentication");
-                if (Objects.equals(dataUsers.getState(), "Activo")){
+                if (Objects.equals(dataUsers.getState(), "Activo")) {
                     editUsersDTO.setBlocked(false);
-                }else{
+                } else {
                     editUsersDTO.setBlocked(true);
                 }
 
@@ -311,7 +313,7 @@ public class ControllerAdmin {
                 serviceDataUsers.saveUsers(dataUsers);
                 return "redirect:viewUsers?id=" + dataUsers.getId() + "&update=true";
 
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 log.info("Error en registro: Por favor verificar campo incorrecto");
                 boolean conflict = ex.getMessage().contains("409");
                 boolean password = ex.getMessage().contains("PasswordStrengthError");
@@ -324,22 +326,22 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/deleteUsers")
-    public String deleteUsers(Model model, long id){
+    public String deleteUsers(Model model, long id) {
         serviceDataUsers.deleteUsers(id);
         return "redirect:dataUsers";
     }
 
     @GetMapping("/adminFeatures")
-    public String features(Model model){
+    public String features(Model model) {
         List<DataFeatures> dataFeaturesList = serviceDataFeatures.getAllDataFeatures();
         model.addAttribute("dataFeaturesList", dataFeaturesList);
         return "adminFeatures";
     }
 
     @GetMapping("/viewFeatures")
-    public String viewFeatures(long id, Model model, boolean update){
+    public String viewFeatures(long id, Model model, boolean update) {
         DataFeatures dataFeatures = serviceDataFeatures.getOneDataFeatures(id);
-        if (update){
+        if (update) {
             model.addAttribute("edit", "Editado");
         }
         model.addAttribute("dataFeatures", dataFeatures);
@@ -347,10 +349,10 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/editFeatures")
-    public String editFeatures(Model model, DataFeatures dataFeatures){
+    public String editFeatures(Model model, DataFeatures dataFeatures) {
         if (dataFeatures.getModule().equals("Calculadora") || dataFeatures.getModule().equals("calc")) {
             dataFeatures.setModule("calc");
-        }else{
+        } else {
             dataFeatures.setModule("admin");
         }
         serviceDataFeatures.updateDatafeatures(dataFeatures);
@@ -362,28 +364,28 @@ public class ControllerAdmin {
                                  Long idFeature, boolean deleteFeature,
                                  Long idUsers, boolean deleteUsers,
                                  Long idTrm, boolean deleteTrm,
-                                 Long idProduct, boolean deleteProduct){
+                                 Long idProduct, boolean deleteProduct) {
 
-        if (idFeature != null){
+        if (idFeature != null) {
             model.addAttribute("id", idFeature);
             model.addAttribute("type", "adminFeatures");
             model.addAttribute("delete", "deleteFeature");
             model.addAttribute("params", "idFeature");
         }
 
-        if (deleteFeature){
+        if (deleteFeature) {
             serviceDataFeatures.deleteDatafeatures(idFeature);
             return "redirect:adminFeatures";
         }
 
-        if (idUsers != null){
+        if (idUsers != null) {
             model.addAttribute("id", idUsers);
             model.addAttribute("type", "dataUsers");
             model.addAttribute("delete", "deleteUsers");
             model.addAttribute("params", "idUsers");
         }
 
-        if (deleteUsers){
+        if (deleteUsers) {
 
             DataUsers dataUsers = serviceDataUsers.getDataUserById(idUsers);
             String authid = dataUsers.getAuthid();
@@ -394,32 +396,32 @@ public class ControllerAdmin {
 
             String uri = "https://auth-projects.us.auth0.com/api/v2/users/" + authid;
             HttpEntity<String> entity = new HttpEntity<>(headers);
-            ResponseEntity<String > response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
 
             serviceDataUsers.deleteUsers(idUsers);
             return "redirect:dataUsers";
         }
 
-        if (idTrm != null){
+        if (idTrm != null) {
             model.addAttribute("id", idTrm);
             model.addAttribute("type", "adminTrm");
             model.addAttribute("delete", "deleteTrm");
             model.addAttribute("params", "idTrm");
         }
 
-        if (deleteTrm){
+        if (deleteTrm) {
             serviceDataCalc.deleteDatacalc(idTrm);
             return "redirect:adminTrm";
         }
 
-        if (idProduct != null){
+        if (idProduct != null) {
             model.addAttribute("id", idProduct);
             model.addAttribute("type", "adminProducts");
             model.addAttribute("delete", "deleteProduct");
             model.addAttribute("params", "idProduct");
         }
 
-        if (deleteProduct){
+        if (deleteProduct) {
             //Delete Product - Service
             return "redirect:adminProducts";
         }
@@ -429,7 +431,7 @@ public class ControllerAdmin {
     }
 
     @RequestMapping("/newFeatures")
-    public String newFeatures(Model model, DataFeatures dataFeatures){
+    public String newFeatures(Model model, DataFeatures dataFeatures) {
         List<String> dataFeaturesDistinctMenu = serviceDataFeatures.getDistinctMenu();
         List<String> dataFeaturesDistinctKeyMenu = serviceDataFeatures.getDistinctKeyMenu();
         List<DataFeatures> dataFeaturesList = serviceDataFeatures.getAllDataFeatures();
@@ -438,5 +440,13 @@ public class ControllerAdmin {
         model.addAttribute("dataFeaturesList", dataFeaturesList);
         return "viewFeatures";
     }
+
+    @RequestMapping("/dataClients")
+    public String newFeatures(Model model) {
+        List<DataClients> dataClientsList =  serviceDataClients.getDataClients();
+        model.addAttribute("dataClients", dataClientsList);
+        return "adminClients";
+    }
+
 
 }
