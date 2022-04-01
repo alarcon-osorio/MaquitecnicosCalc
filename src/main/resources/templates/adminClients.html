@@ -1,1 +1,57 @@
-EN CONSTRUCCIÓN ....
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <button type="button" id="export_button" class="btn btn-outline-success">Exportar Excel</button>
+            <a th:href="@{/searchProducts?importId=4}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+        </div>
+
+        <table id="data_calc" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">NIT</th>
+                <th scope="col">Compañia</th>
+                <th scope="col">Email</th>
+                <th class="text-center" scope="col">Nombre Cliente</th>
+                <th class="text-center" scope="col">Telefono</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">WEB</th>
+                <th scope="col">Tipo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr th:each="dataTempList, iter : ${dataTempList}">-->
+            <tr th:each="dataClients, iter : ${dataClients}">
+                <th scope="row">1</th>
+                <td th:text="${dataClients.nit}"></td>
+                <td th:text="${dataClients.company}"></td>
+                <td th:text="${dataClients.email}"></td>
+                <td th:text="${dataClients.clientname}"></td>
+                <td th:text="${dataClients.cellphone}"></td>
+                <td th:text="${dataClients.address}"></td>
+                <td th:text="${dataClients.web}"></td>
+                <td th:text="${dataClients.type}"></td>
+                <!--
+                <th scope="row" th:text="${iter.index}+1"></th>
+                <td th:text="${dataTempList.imports}"></td>
+                <td th:text="${dataTempList.ref}"></td>
+                <td th:text="${dataTempList.descript}"></td>
+                <td align="center" th:text="${dataTempList.cant} > 1 ? 'Más de ' + ${dataTempList.cant} + ' Unidades': ${dataTempList.cant} + ' Unidad'"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.vip, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.distri, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.consu, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.pub, 0, 'COMMA', 2, 'POINT')}"></td>
+                -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="js/owner.js"></script>
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>
