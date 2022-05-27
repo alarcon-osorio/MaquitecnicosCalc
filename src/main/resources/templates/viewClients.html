@@ -1,0 +1,84 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:insert="includes/header :: header"> </header>
+<header th:insert="includes/navbar :: navbar"> </header>
+
+<div class="container mt-4 vj-destacados">
+    <div class="row">
+        <div class="col col-md-12 text-right mb-4">
+            <a th:href="@{/adminClients}" class="btn btn-outline-danger">Atrás</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2 align="center">Datos de Cliente</h2>
+        <p th:text="${hola}"></p>
+        <div th:if="${edit} == 'Editado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
+            <strong>Exito!</strong> Guardado exitosamente.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:if="${conflict} == 'Err Email'" class="alert alert-danger alert-dismissible fade show" role="alert" id="edit">
+            <strong>Sin Exito!</strong> Ya existe usuario con ese correo.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div th:if="${password} == 'Err password'" class="alert alert-Warning alert-dismissible fade show" role="alert" id="edit">
+            <strong>Sin Exito!</strong> Formato de contraseña incorrecto (Debe ser minimo de 8 Caracteres una mayuscula numeros y caracteres).
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="abs-center">
+        <form th:action="@{/saveUsers}" class="border p-3 form" method="POST">
+            <div class="mb-3">
+                <input th:if="${#strings.isEmpty(dataUsers.email)}" type="hidden" class="form-control" name="type" value="add">
+                <input th:if="${not #strings.isEmpty(dataUsers.email)}" type="hidden" class="form-control" name="type" value="update">
+                <input type="hidden" class="form-control" name="authid" th:value="${dataUsers.authid}">
+                <input type="hidden" class="form-control" id="id" name="id" th:value="${dataUsers.id}">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" th:value="${dataUsers.name}" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input th:if="${not #strings.isEmpty(dataUsers.email)}" type="email" class="form-control" name="email" th:value="${dataUsers.email}" readonly>
+                <input th:if="${#strings.isEmpty(dataUsers.email)}" type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="login" class="form-label">Login</label>
+                <input type="text" class="form-control" id="login" name="login" th:value="${dataUsers.login}" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" th:value="${dataUsers.password}" required>
+            </div>
+            <div class="mb-3">
+                <label for="profile" class="form-label">Perfil</label>
+                <select class="form-control" name="profile" id="profile" required>
+                    <option value="admin">admin</option>
+                    <option value="user">user</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="state" class="form-label">Estado</label>
+                <select class="form-control" name="state" id="state" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success float-right">Guardar</button>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $("#edit").fadeOut(2000);
+        },2000);
+    });
+</script>
+<footer th:insert="includes/footer :: footer"> </footer>
+</html>
