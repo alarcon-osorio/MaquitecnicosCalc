@@ -1,15 +1,14 @@
 package com.server.calc.service;
 
-import com.server.calc.dto.UsersDTO;
+
 import com.server.calc.entity.DataUsers;
 import com.server.calc.repository.RepositoryDataUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ServiceDataUsers {

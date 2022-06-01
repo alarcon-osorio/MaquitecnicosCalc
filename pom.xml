@@ -20,9 +20,7 @@ http://maven.apache.org/POM/4.0.0 ">
 	</properties>
 
 	<!--Despliegue -->
-	<!--
 	<packaging>war</packaging>
-	-->
 
 	<dependencies>
 		<dependency>

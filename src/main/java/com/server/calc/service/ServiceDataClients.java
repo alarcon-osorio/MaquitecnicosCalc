@@ -17,4 +17,12 @@ public class ServiceDataClients {
     return repositoryDataClients.findAll();
   }
 
+  public String getDataClientsByNit(String nit){
+     return repositoryDataClients.findByNit(nit);
+  }
+
+  public void saveDataClients(DataClients dataClients){
+    repositoryDataClients.save(dataClients);
+  }
+
 }

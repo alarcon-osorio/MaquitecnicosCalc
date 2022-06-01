@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepositoryDataClients extends JpaRepository<DataClients, Long> {
+
+    public String findByNit(String nit);
+
 }
