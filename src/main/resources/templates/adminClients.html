@@ -23,10 +23,10 @@
                     <th scope="col">Dirección</th>
                     <th scope="col">WEB</th>
                     <th scope="col">Tipo</th>
+                    <th scope="col">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!--<tr th:each="dataTempList, iter : ${dataTempList}">-->
                 <tr th:each="dataClients, iter : ${dataClients}">
                     <th scope="row" th:text="${iter.index}+1"></th>
                     <td th:text="${dataClients.nit}"></td>
@@ -37,6 +37,13 @@
                     <td th:text="${dataClients.address}"></td>
                     <td th:text="${dataClients.web}"></td>
                     <td th:text="${dataClients.type}"></td>
+                    <td>
+                        <center>
+                            <div class="btn-group">
+                                <a th:href="@{/viewClients(id=${dataClients.id})}" th:text="Editar" class="btn btn-success"></a>
+                            </div>
+                        </center>
+                    </td>
                 </tr>
                 </tbody>
             </table>

@@ -11,8 +11,13 @@
     </div>
     <div class="container">
         <h2 align="center">Datos de Cliente</h2>
-
-        <div th:if="${add} == 'Agregado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
+        <div th:if="${exist} == 'Existe'" class="alert alert-warning alert-dismissible fade show" role="alert" id="exist">
+            <strong>Existente!</strong> El registro existe, por favor verifique el NIT.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:if="${edit} == 'Editado'" class="alert alert-success alert-dismissible fade show" role="alert" id="edit">
             <strong>Exito!</strong> Guardado exitosamente.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -22,33 +27,41 @@
     <div class="abs-center">
         <form th:action="@{/saveClients}" class="border p-3 form" method="POST">
             <div class="mb-3">
+                <input type="hidden" class="form-control" id="id" name="id" th:value="${dataClients.id}" readonly>
                 <input type="hidden" class="form-control" name="operation" value="add">
                 <label for="nit" class="form-label">NIT</label>
-                <input type="text" class="form-control" id="nit" name="nit" required>
+                <input th:if="${not #strings.isEmpty(dataClients.nit)}" type="text" class="form-control" id="nit" name="nit" th:value="${dataClients.nit}">
+                <input th:if="${#strings.isEmpty(dataClients.nit)}" type="text" class="form-control" name="nit" id="nitInput">
             </div>
             <div class="mb-3">
                 <label for="company" class="form-label">Compañia</label>
-                <input type="text" class="form-control" id="company" name="company" required>
+                <input th:if="${not #strings.isEmpty(dataClients.company)}" type="text" class="form-control" id="company" name="company" th:value="${dataClients.company}">
+                <input th:if="${#strings.isEmpty(dataClients.company)}" type="text" class="form-control" name="company" id="companynput">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input th:if="${not #strings.isEmpty(dataClients.email)}" type="text" class="form-control" id="email" name="email" th:value="${dataClients.email}">
+                <input th:if="${#strings.isEmpty(dataClients.email)}" type="text" class="form-control" name="email" id="emailInput">
             </div>
             <div class="mb-3">
                 <label for="clientname" class="form-label">Nombre Cliente</label>
-                <input type="text" class="form-control" id="clientname" name="clientname" required>
+                <input th:if="${not #strings.isEmpty(dataClients.clientname)}" type="text" class="form-control" id="clientname" name="clientname" th:value="${dataClients.clientname}">
+                <input th:if="${#strings.isEmpty(dataClients.clientname)}" type="text" class="form-control" name="clientname" id="clientnameInput">
             </div>
             <div class="mb-3">
                 <label for="cellphone" class="form-label">Teléfono</label>
-                <input type="number" class="form-control" id="cellphone" name="cellphone" required>
+                <input th:if="${not #strings.isEmpty(dataClients.cellphone)}" type="text" class="form-control" id="cellphone" name="cellphone" th:value="${dataClients.cellphone}">
+                <input th:if="${#strings.isEmpty(dataClients.cellphone)}" type="text" class="form-control" name="cellphone" id="cellphoneInput">
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="address" name="address" required>
+                <input th:if="${not #strings.isEmpty(dataClients.address)}" type="text" class="form-control" id="address" name="address" th:value="${dataClients.address}">
+                <input th:if="${#strings.isEmpty(dataClients.address)}" type="text" class="form-control" name="address" id="addressInput">
             </div>
             <div class="mb-3">
                 <label for="web" class="form-label">WEB</label>
-                <input type="text" class="form-control" id="web" name="web" required>
+                <input th:if="${not #strings.isEmpty(dataClients.web)}" type="text" class="form-control" id="web" name="web" th:value="${dataClients.web}">
+                <input th:if="${#strings.isEmpty(dataClients.web)}" type="text" class="form-control" name="web" id="webInput">
             </div>
 
             <div class="mb-3">

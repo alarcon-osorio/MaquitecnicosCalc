@@ -454,8 +454,21 @@ public class ControllerAdmin {
         return "adminClients";
     }
 
+    @GetMapping("/viewClients")
+    public String viewClients(long id, Model model, String operation) {
+        DataClients dataClients = serviceDataClients.getOneDataClients(id);
+        if (operation == "edit") {
+            model.addAttribute("edit", "Editado");
+        }
+        if (operation == "exist") {
+            model.addAttribute("exist", "Existe");
+        }
+        model.addAttribute("dataClients", dataClients);
+        return "viewClients";
+    }
+
     @RequestMapping("/newClients")
-    public String newClients(Model model, String operation) {
+    public String newClients(Model model, DataClients dataClients, String operation) {
         if (operation == "add"){
             model.addAttribute("add", "Agregado");
             return "viewClients";
@@ -467,15 +480,10 @@ public class ControllerAdmin {
     @RequestMapping("/saveClients")
     public String saveClients(Model model, DataClients dataClients) {
 
-        try{
-            String nit = serviceDataClients.getDataClientsByNit(dataClients.getNit());
-
-            if (!nit.isEmpty() || nit != null){
-                serviceDataClients.saveDataClients(dataClients);
-                return "redirect:newClients";
-            }
-
-        }catch (NullPointerException ex){
+        if(dataClients.getId() == null ){
+            serviceDataClients.saveDataClients(dataClients);
+            return "redirect:dataClients";
+        }else{
             dataClients.setNit(dataClients.getNit());
             dataClients.setCompany(dataClients.getCompany());
             dataClients.setEmail(dataClients.getEmail());
@@ -484,14 +492,17 @@ public class ControllerAdmin {
             dataClients.setAddress(dataClients.getAddress());
             dataClients.setWeb(dataClients.getWeb());
             dataClients.setType(dataClients.getType());
-
             serviceDataClients.saveDataClients(dataClients);
-
-            return "redirect:newClients?operation=add";
         }
 
-        return "redirect:newClients?operation=add";
+       return "redirect:viewClients?id=" + dataClients.getId() + "&operation=edit";
 
+    }
+
+    @RequestMapping("/editClients")
+    public String editClients(Model model, DataClients dataClients) {
+        serviceDataClients.updateDataClients(dataClients);
+        return "redirect:viewClients?id=" + dataClients.getNit() + "&update=true";
     }
 
     public DataTokenResponse getToken (){
