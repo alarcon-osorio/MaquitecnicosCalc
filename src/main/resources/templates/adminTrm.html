@@ -21,8 +21,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="trmList : ${trmList}">
-                <th scope="row" th:text="${trmList.id}"></th>
+            <tr th:each="trmList, iter : ${trmList}">
+                <th scope="col" th:text="${iter.index} + 1"></th>
                 <td th:text="${trmList.concept}"></td>
                 <td th:text="'$' + ${trmList.valueCop}"></td>
                 <td th:text="${trmList.legalization} + '%'"></td>

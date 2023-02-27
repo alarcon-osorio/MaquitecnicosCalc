@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepositoryDataClients extends JpaRepository<DataClients, Long> {
 
-    @Query(value = "SELECT * FROM maquitecnicoscalc.dataclients WHERE nit = ?1 ",
+    @Query(value = "SELECT * FROM dataclients WHERE nit = ?1 ",
             nativeQuery = true)
     DataClients findByNit(String nit);
 

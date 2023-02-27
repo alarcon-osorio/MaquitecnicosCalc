@@ -14,7 +14,7 @@ public class ServiceDataStatic {
     RepositoryDataStatic repositoryDataStatic;
 
     public List<DataStatic> getAll(){
-        return repositoryDataStatic.findAll();
+        return repositoryDataStatic.findAllByPosition();
     }
 
     public DataStatic getById(long importId){

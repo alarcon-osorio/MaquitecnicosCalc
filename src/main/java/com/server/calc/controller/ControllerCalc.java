@@ -216,7 +216,7 @@ public class ControllerCalc {
     @GetMapping("/detailImport")
     public String detailImportNormalDT(String reference, long importId,  Model model) {
 
-        if (importId == 1 || importId == 3) {
+        if (importId == 1 || importId == 3 || importId == 6) {
             List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference, 1);
             if (dataProductList.isEmpty()) {
                 DataStatic dataStatic = serviceDataStatic.getById(importId);
@@ -227,6 +227,8 @@ public class ControllerCalc {
                 return "searchProducts";
             }
             model.addAttribute("dataproductlist", dataProductList);
+
+        }else if (importId == 7){
 
         }else{
             List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference, 2);
