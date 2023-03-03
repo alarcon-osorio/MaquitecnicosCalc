@@ -100,7 +100,9 @@ public class ControllerAdmin {
     }
 
     @GetMapping("export/excel")
-    public void exportToExcel(HttpServletResponse response) throws IOException {
+    public void exportToExcel(HttpServletResponse response, String fechaIni, String fechaFin) throws IOException {
+        log.info("Fecha Inicio: " + fechaIni);
+        log.info("Fecha Inicio: " + fechaFin);
         log.info(response);
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -110,7 +112,7 @@ public class ControllerAdmin {
         String headerValue = "attachment; filename=no_cotizados" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<DataRegistry> dataRegistries = serviceDataRegistry.getDataRegistryAll();
+        List<DataRegistry> dataRegistries = serviceDataRegistry.getDataRegistryByDate(fechaIni, fechaFin);
 
         ExcelExportUnlisted excelExporter = new ExcelExportUnlisted(dataRegistries);
 

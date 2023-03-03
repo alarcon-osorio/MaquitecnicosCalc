@@ -8,12 +8,28 @@
             <!--Export JavaScript -->
             <!--<button type="button" id="export_button" class="btn btn-outline-success">Exportar Excel</button>-->
             <!--Apacha POI -->
-            <a th:href="@{/export/excel}" type="button" class="btn btn-outline-success">Exportar Excel</a>
+            <!--<a th:href="@{/export/excel}" type="button" class="btn btn-outline-success">Exportar Excel</a>-->
             <a th:href="@{/admin}" class="btn btn-outline-danger">Atrás</a>
             <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
         </div>
     </div>
     <h2 align="center">Reporte no Cotizados</h2><br>
+    <!--Filtro de Busqueda -->
+    <h5>Filtrar por fecha: </h5>
+    <!--Apacha POI -->
+    <form th:action="@{/export/excel}" method="get">
+        <div class="form-row align-items-center">
+            <div class="col-sm-3 my-1">
+                <input type="date" th:name="fechaIni" th:id="fechaIni" class="form-control">
+            </div>
+            <div class="col-sm-3 my-1">
+                <input type="date" th:name="fechaFin" th:id="fechaFin" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-outline-success">Descargar Excel</button>
+            <!--<a th:href="@{/export/excel/fechaIni/fechaFin}" class="btn btn-outline-success mb-2">Exportar Excel</a>-->
+        </div>
+    </form>
+    <br>
     <div class="row" id="div-table">
         <table id="data_calc" class="table table-striped">
             <thead>

@@ -21,4 +21,8 @@ public class ServiceDataRegistry {
         return repositoryDataRegistry.findAll();
     }
 
+    public List<DataRegistry> getDataRegistryByDate(String fechaIni, String fechaFin){
+        return repositoryDataRegistry.findRegistryByDate(fechaIni, fechaFin);
+    }
+
 }

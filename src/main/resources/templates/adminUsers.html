@@ -13,53 +13,33 @@
     <div class="row">
         <table class="table table-bordered">
             <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Email</th>
-                <th scope="col">Login</th>
-                <th scope="col">Perfil</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acciones</th>
-            </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Perfil</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
             </thead>
-            <tbody>
-           <!-- <tr th:each="dataUsers : ${dataUsers}">
-                <td th:text="${dataUsers.id}"></td>
-                <td th:text="${dataUsers.name}"></td>
-                <td th:text="${dataUsers.email}"></td>
-                <td th:text="${dataUsers.login}"></td>
-                <td th:text="${dataUsers.password}"></td>
-                <td th:text="${dataUsers.profile}"></td>
-                <td th:text="${dataUsers.state}"></td>
-                <td>
-                    <center>
-                        <div class="btn-group">
-                            <a th:href="@{/viewUsers(id=${dataUsers.id})}" th:text="Editar" class="btn btn-success"></a>
-                            <a th:href="@{/delete(idUsers=${dataUsers.id})}" th:text="Eliminar" class="btn btn-danger"></a>
-                            <a class="btn btn-warning" id="resetPass" th:attr="onclick=|emailing('${dataUsers.email}')|">Reset Pass</a>
-                        </div>
-                    </center>
-                </td>
-            </tr>-->
 
-            <tr th:each="usuarios, iter : ${usuarios}">
-                <th scope="col" th:text="${iter.index} + 1"></th>
-                <td th:text="${usuarios.name}"></td>
-                <td th:text="${usuarios.email}"></td>
-                <td th:text="${usuarios.login}"></td>
-                <td th:text="${usuarios.profile}"></td>
-                <td th:text="${usuarios.state}"></td>
-                <td>
-                    <center>
-                        <div class="btn-group">
-                            <a th:href="@{/viewUsers(id=${usuarios.id})}" th:text="Editar" class="btn btn-success"></a>
-                            <a th:href="@{/delete(idUsers=${usuarios.id})}" th:text="Eliminar" class="btn btn-danger"></a>
-                            <a class="btn btn-warning" id="resetPass" th:attr="onclick=|emailing('${usuarios.email}')|">Reset Pass</a>
-                        </div>
-                    </center>
-                </td>
-            </tr>
+            <tbody>
+                <tr th:each="usuarios, iter : ${usuarios}">
+                    <th scope="col" th:text="${iter.index} + 1"></th>
+                    <td th:text="${usuarios.name}"></td>
+                    <td th:text="${usuarios.email}"></td>
+                    <td th:text="${usuarios.login}"></td>
+                    <td th:text="${usuarios.profile}"></td>
+                    <td th:text="${usuarios.state}"></td>
+                    <td>
+                            <div class="btn-group" th:if="${usuarios.id} != 1">
+                                <a th:href="@{/viewUsers(id=${usuarios.id})}" th:text="Editar" class="btn btn-success"></a>
+                                <a th:href="@{/delete(idUsers=${usuarios.id})}" th:text="Eliminar" class="btn btn-danger"></a>
+                                <a class="btn btn-warning" id="resetPass" th:attr="onclick=|emailing('${usuarios.email}')|">Reset Pass</a>
+                            </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -76,7 +56,7 @@ function emailing(email){
               connection: "Username-Password-Authentication"
             },
             function(data,status){
-              alert("Respuesta: Solicitud de cambio de contraseña... " + "\nCorreo: " + email );
+              alert("Respuesta: Solicitud de cambio de contraseña para... " + "\n" + email );
             });
     });
     console.log("Enviado ...")
