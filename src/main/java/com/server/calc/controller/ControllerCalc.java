@@ -96,6 +96,12 @@ public class ControllerCalc {
             return "registryProduct";
         }
 
+        if (importId == 7){
+            DataStatic dataStatic = serviceDataStatic.getById(importId);
+            model.addAttribute("datastatic", dataStatic);
+            return "calcChina";
+        }
+
         DataStatic dataStatic = serviceDataStatic.getById(importId);
         model.addAttribute("datastatic", dataStatic);
 
@@ -228,9 +234,7 @@ public class ControllerCalc {
             }
             model.addAttribute("dataproductlist", dataProductList);
 
-        }else if (importId == 7){
-
-        }else{
+        } else{
             List<DataProduct> dataProductList = serviceDataProduct.getDataProductReferenceList(reference, 2);
             if (dataProductList.isEmpty()) {
                 DataStatic dataStatic = serviceDataStatic.getById(importId);

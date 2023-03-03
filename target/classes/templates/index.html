@@ -23,7 +23,9 @@
     <div class="row">
         <div th:each="datastat : ${datastatic}" class="col-md-3  mb-4">
             <div class="card">
-               <img th:src="${datastat.urlImagen}" class="card-img-top" alt="...">
+                <a th:href="@{/searchProducts(importId=${datastat.id})}">
+                    <img th:src="${datastat.urlImagen}" class="card-img-top" alt="...">
+                </a>
                 <div class="card-body">
                     <h5 th:text="${datastat.concept}" class="card-title"></h5>
                 </div>
