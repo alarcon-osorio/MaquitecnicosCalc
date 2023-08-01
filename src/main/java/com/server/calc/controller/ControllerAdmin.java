@@ -9,6 +9,7 @@ import com.server.calc.repository.RepositoryDataUsers;
 import com.server.calc.service.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,7 @@ import java.util.*;
 
 @Controller
 @Log4j2
+@Component
 public class ControllerAdmin {
 
     @Autowired
@@ -61,6 +64,24 @@ public class ControllerAdmin {
 
     @Autowired
     ServiceDataClients serviceDataClients;
+
+    @Value("${spring.security.oauth2.client.registration.auth0.client-id}")
+    private String token_clientId;
+
+    @Value("${spring.security.oauth2.client.registration.auth0.client-secret}")
+    private String token_clientSecret;
+
+    @Value("${token.url}")
+    private String token_url;
+
+    @Value("${token.grant_type}")
+    private String token_grant_type;
+
+    @Value("${uri.get_users}")
+    private String uri_get_users;
+
+    @Value("${token.audience}")
+    private String token_audience;
 
     @Bean
     public RestTemplate restTemplate() {
@@ -179,7 +200,7 @@ public class ControllerAdmin {
 
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        ResponseEntity<String> response = (new RestTemplate()).exchange("https://auth-projects.us.auth0.com/api/v2/users", HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = (new RestTemplate()).exchange(uri_get_users, HttpMethod.GET, entity, String.class);
 
         UsersDTO[] usersDTO = mapper.readValue(response.getBody(), UsersDTO[].class);
 
@@ -243,7 +264,11 @@ public class ControllerAdmin {
             try {
                 //Crea registro en AUTH0
                 Date date = new Date();
-                SimpleDateFormat formateadorFecha = new SimpleDateFormat("ddMMyyyy");
+                SimpleDateFormat hourFormat = new SimpleDateFormat("HHmmss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+
+                String dateId = dateFormat.format(date);
+                String hourId = hourFormat.format(date);
 
                 NewUsersDTO newUsersDTO = new NewUsersDTO();
                 newUsersDTO.setName(dataUsers.getName());
@@ -252,7 +277,7 @@ public class ControllerAdmin {
                 newUsersDTO.setUsername(dataUsers.getLogin());
                 newUsersDTO.setPassword(dataUsers.getPassword());
                 newUsersDTO.setVerify_email(true);
-                newUsersDTO.setUser_id("2022fff" + formateadorFecha.format(date) + "dbmaq");
+                newUsersDTO.setUser_id(dateId + "calc" + hourId + "mt");
                 newUsersDTO.setConnection("Username-Password-Authentication");
 
                 HttpHeaders headers = new HttpHeaders();
@@ -263,21 +288,25 @@ public class ControllerAdmin {
                 headers.add("Authorization", "Bearer " + token );
 
                 HttpEntity<Object> entity = new HttpEntity<>(newUsersDTO, headers);
-                String uri = "https://auth-projects.us.auth0.com/api/v2/users";
+                String uri = uri_get_users;
+
+                log.info(entity.getBody());
 
                 ResponseEntity<NewUsersDTO> response = restTemplate.postForEntity(uri, entity, NewUsersDTO.class);
+
+                log.info(response.getStatusCode());
 
                 if (response.getStatusCode() == HttpStatus.CREATED) {
                     log.info("Creado en Auth0");
                     //Crea registro en BD
-                    dataUsers.setAuthid("auth0|2022fff" + formateadorFecha.format(date) + "dbmaq");
+                    dataUsers.setAuthid("auth0|" + dateId + "calc" + hourId + "mt");
                     serviceDataUsers.saveUsers(dataUsers);
                     log.info("Creado en BD");
                     return "redirect:viewUsers?id=" + dataUsers.getId() + "&update=true";
                 }
 
             } catch (Exception ex) {
-                log.info("Error en registro: Por favor verificar campo incorrecto");
+                log.info("Error en registro: Por favor verificar campo incorrecto: " + ex);
                 boolean conflict = ex.getMessage().contains("409");
                 boolean password = ex.getMessage().contains("PasswordStrengthError");
                 return "redirect:newUsers?" + "conflict=" + conflict + "&password=" + password;
@@ -309,7 +338,7 @@ public class ControllerAdmin {
                 headers.add("Authorization", "Bearer " + token );
 
                 HttpEntity<Object> entity = new HttpEntity<>(editUsersDTO, headers);
-                String uri = "https://auth-projects.us.auth0.com/api/v2/users/" + authid;
+                String uri = uri_get_users + "/" + authid;
 
                 RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
@@ -319,7 +348,7 @@ public class ControllerAdmin {
                 return "redirect:viewUsers?id=" + dataUsers.getId() + "&update=true";
 
             } catch (Exception ex) {
-                log.info("Error en registro: Por favor verificar campo incorrecto");
+                log.info("Error en registro: Por favor verificar campo incorrecto: " + ex);
                 boolean conflict = ex.getMessage().contains("409");
                 boolean password = ex.getMessage().contains("PasswordStrengthError");
                 return "redirect:newUsers?" + "conflict=" + conflict + "&password=" + password;
@@ -402,7 +431,7 @@ public class ControllerAdmin {
 
             headers.add("Authorization", "Bearer " + token);
 
-            String uri = "https://auth-projects.us.auth0.com/api/v2/users/" + authid;
+            String uri = uri_get_users + "/" + authid;
             HttpEntity<String> entity = new HttpEntity<>(headers);
             ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
 
@@ -508,13 +537,14 @@ public class ControllerAdmin {
     }
 
     public DataTokenResponse getToken (){
-        DataToken dataToken = new DataToken();
-        dataToken.setClient_id("16gHvUIkwjJH6DdxdX6eIqV9BTIShNGu");
-        dataToken.setGrant_type("client_credentials");
-        dataToken.setClient_secret("puSlQ2A-rM2ad7DY6OHgFgpeS7t5Ofyueb8oambYTTq4L_HcBhjvGSw12Sjia3cT");
-        dataToken.setAudience("https://auth-projects.us.auth0.com/api/v2/");
 
-        String URI_TOKEN = "https://auth-projects.us.auth0.com/oauth/token";
+        String URI_TOKEN = token_url;
+
+        DataToken dataToken = new DataToken();
+        dataToken.setClient_id(token_clientId);
+        dataToken.setGrant_type(token_grant_type);
+        dataToken.setClient_secret(token_clientSecret);
+        dataToken.setAudience(token_audience);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));

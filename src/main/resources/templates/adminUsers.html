@@ -49,9 +49,9 @@ function emailing(email){
     console.log("Enviando ...")
     $(document).ready(function(){
 
-            $.post("https://auth-projects.us.auth0.com/dbconnections/change_password",
+            $.post("[[${@environment.getProperty('uri.change_password_users')}]]",
             {
-              client_id: "16gHvUIkwjJH6DdxdX6eIqV9BTIShNGu",
+              client_id:"[[${@environment.getProperty('spring.security.oauth2.client.registration.auth0.client-id')}]]",
               email: email,
               connection: "Username-Password-Authentication"
             },
