@@ -210,7 +210,7 @@ public class ControllerAdmin {
                 String name = usersAdd.getName();
                 String email = usersAdd.getEmail();
                 String login = usersAdd.getNickname();
-                String password = "***********";
+                String password = "Mtautopartes.com2023";
                 String profile = "user";
                 String state = "Activo";
                 String authid = usersAdd.getUser_id();
