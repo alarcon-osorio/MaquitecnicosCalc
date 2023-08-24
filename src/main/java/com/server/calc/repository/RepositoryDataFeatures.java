@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RepositoryDataFestures extends JpaRepository<DataFeatures, Long> {
+public interface RepositoryDataFeatures extends JpaRepository<DataFeatures, Long> {
     @Query(value = "SELECT * " +
             "FROM datafeatures " +
             "WHERE module = ?1 " +

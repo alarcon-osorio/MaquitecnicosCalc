@@ -1,7 +1,7 @@
 package com.server.calc.service;
 
 import com.server.calc.entity.DataFeatures;
-import com.server.calc.repository.RepositoryDataFestures;
+import com.server.calc.repository.RepositoryDataFeatures;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,42 +11,42 @@ import java.util.List;
 public class ServiceDataFeatures {
 
     @Autowired
-    RepositoryDataFestures repositoryDataFestures;
+    RepositoryDataFeatures repositoryDataFeatures;
 
     public List<DataFeatures> getDataFeatures(String module, long menunumber, String keymenu){
-        return repositoryDataFestures.findDataFeatures(module, menunumber, keymenu);
+        return repositoryDataFeatures.findDataFeatures(module, menunumber, keymenu);
     }
 
     public List<DataFeatures> getAllDataFeatures(){
-        return repositoryDataFestures.findAll();
+        return repositoryDataFeatures.findAll();
     }
 
     public DataFeatures getOneDataFeatures(long id){
-        return repositoryDataFestures.findById(id).get();
+        return repositoryDataFeatures.findById(id).get();
     }
 
     public void updateDatafeatures(DataFeatures dataFeatures){
-        repositoryDataFestures.save(dataFeatures);
+        repositoryDataFeatures.save(dataFeatures);
     }
 
     public List<String> getDistinctMenu(){
-        return repositoryDataFestures.findDistincMenu();
+        return repositoryDataFeatures.findDistincMenu();
     }
 
     public List<String> getDistinctKeyMenu(){
-        return repositoryDataFestures.findDistinctKeyMenu();
+        return repositoryDataFeatures.findDistinctKeyMenu();
     }
 
     public Long getDataFeaturesMenuNumber(String menu){
-        return repositoryDataFestures.findDataFeaturesMenuNumber(menu);
+        return repositoryDataFeatures.findDataFeaturesMenuNumber(menu);
     }
 
     public String getDataFeaturesModule(String menu){
-        return repositoryDataFestures.findDataFeaturesModule(menu);
+        return repositoryDataFeatures.findDataFeaturesModule(menu);
     }
 
     public void deleteDatafeatures(Long id){
-        repositoryDataFestures.deleteById(id);
+        repositoryDataFeatures.deleteById(id);
     }
 
 }
