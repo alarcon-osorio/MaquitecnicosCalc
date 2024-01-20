@@ -5,8 +5,8 @@
 <div class="container mt-4 vj-destacados">
     <div class="row">
         <div class="col col-md-12 text-right mb-4">
-            <a th:object="${datastatic}" th:href="@{/searchProducts(importId=*{id})}" class="btn btn-outline-success">Atrás</a>
-            <a th:href="@{/calc}" class="btn btn-outline-warning">Home</a>
+            <a th:href="@{/calc}" class="btn btn-outline-warning">Inicio <i class="fas fa-home"></i></a>
+            <a th:object="${datastatic}" th:href="@{/searchProducts(importId=*{id})}" class="btn btn-outline-success">Atrás <i class="fas fa-chevron-left"></i></a>
         </div>
     </div>
     <div class="row">
@@ -33,7 +33,7 @@
                     </select>
                 </div>
                 <center>
-                    <button type="submit" class="btn btn-primary">Calcular</button>
+                    <button type="submit" class="btn btn-primary">Calcular <i class="fas fa-search-dollar"></i></button>
                 </center>
             </form>
         </div>

@@ -73,7 +73,6 @@ http://maven.apache.org/POM/4.0.0 ">
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
-			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -128,8 +127,14 @@ http://maven.apache.org/POM/4.0.0 ">
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
+            <scope>compile</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

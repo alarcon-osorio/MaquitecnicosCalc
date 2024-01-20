@@ -8,6 +8,7 @@ import com.server.calc.exporter.ExcelExportUnlisted;
 import com.server.calc.repository.RepositoryDataUsers;
 import com.server.calc.service.*;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.server.calc.constants.values.*;
 
 @Controller
 @Log4j2
@@ -83,6 +86,15 @@ public class ControllerAdmin {
     @Value("${token.audience}")
     private String token_audience;
 
+    @Value("${datauser.default.password}")
+    private static String datauser_default_password;
+
+    @Value("${datauser.default.profile}")
+    private static String datauser_default_profile;
+
+    @Value("${datauser.default.state}")
+    private static String datauser_default_state;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -102,7 +114,7 @@ public class ControllerAdmin {
                             model.addAttribute("trm", dataCalc.getValueCop());
                         }
                     }
-                    return "admin";
+                    return "admin/admin";
                 } else {
                     return "redirect:calc";
                 }
@@ -117,7 +129,7 @@ public class ControllerAdmin {
     public String ulisted(Model model) {
         List<DataRegistry> dataRegistryList = serviceDataRegistry.getDataRegistryAll();
         model.addAttribute("dataRegistryList", dataRegistryList);
-        return "adminUnlisted";
+        return "admin/adminUnlisted";
     }
 
     @GetMapping("export/excel")
@@ -126,7 +138,7 @@ public class ControllerAdmin {
         log.info("Fecha Inicio: " + fechaFin);
         log.info(response);
         response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
@@ -145,7 +157,7 @@ public class ControllerAdmin {
         List<DataCalcJoin> trmList = serviceDataTrm.getDataTrmJoinList();
         log.info("Lista: " + trmList);
         model.addAttribute("trmList", trmList);
-        return "adminTrm";
+        return "admin/adminTrm";
     }
 
     @GetMapping("/viewTrm")
@@ -187,7 +199,7 @@ public class ControllerAdmin {
         Page<List<DataProduct>> productList = serviceDataProduct.getAllDataProductGeneral(pageable);
         log.info("Lista de Productos: " + productList);
         model.addAttribute("productList", productList);
-        return "adminProducts";
+        return "admin/adminProducts";
     }
 
     @RequestMapping(value = "/dataUsers")
@@ -198,8 +210,8 @@ public class ControllerAdmin {
 
         String token = getToken().getAccess_token();
 
-        headers.add("Authorization", "Bearer " + token);
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        headers.add(HEADER_NAME, HEADER_VALUE + token);
+        HttpEntity<String> entity = new HttpEntity<String>(BODY_PARAMETER, headers);
         ResponseEntity<String> response = (new RestTemplate()).exchange(uri_get_users, HttpMethod.GET, entity, String.class);
 
         UsersDTO[] usersDTO = mapper.readValue(response.getBody(), UsersDTO[].class);
@@ -210,9 +222,9 @@ public class ControllerAdmin {
                 String name = usersAdd.getName();
                 String email = usersAdd.getEmail();
                 String login = usersAdd.getNickname();
-                String password = "Mtautopartes.com2023";
-                String profile = "user";
-                String state = "Activo";
+                String password = datauser_default_password;
+                String profile = datauser_default_profile;
+                String state = datauser_default_state;
                 String authid = usersAdd.getUser_id();
                 serviceDataUsers.addUsersIdempotente(name, email, login, password, profile, state, authid);
             }
@@ -221,7 +233,7 @@ public class ControllerAdmin {
         List<DataUsers> usersList = serviceDataUsers.getAllUsers();
 
         model.addAttribute("usuarios", usersList);
-        return "adminUsers";
+        return "admin/adminUsers";
     }
 
     @GetMapping("/viewUsers")
@@ -241,7 +253,7 @@ public class ControllerAdmin {
         }
 
         model.addAttribute("dataUsers", dataUsers);
-        return "viewUsers";
+        return "admin/views/viewUsers";
     }
 
     @RequestMapping("/newUsers")
@@ -254,7 +266,7 @@ public class ControllerAdmin {
             model.addAttribute("conflict", "Err Email");
         }
 
-        return "viewUsers";
+        return "admin/views/viewUsers";
     }
 
     @RequestMapping("/saveUsers")
@@ -264,28 +276,20 @@ public class ControllerAdmin {
             try {
                 //Crea registro en AUTH0
                 Date date = new Date();
-                SimpleDateFormat hourFormat = new SimpleDateFormat("HHmmss");
-                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+                SimpleDateFormat hourFormat = new SimpleDateFormat(DATE_FORMAT_HOUR);
+                SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_ONLY_DATE);
 
                 String dateId = dateFormat.format(date);
                 String hourId = hourFormat.format(date);
 
-                NewUsersDTO newUsersDTO = new NewUsersDTO();
-                newUsersDTO.setName(dataUsers.getName());
-                newUsersDTO.setEmail(dataUsers.getEmail());
-                newUsersDTO.setNickname(dataUsers.getLogin());
-                newUsersDTO.setUsername(dataUsers.getLogin());
-                newUsersDTO.setPassword(dataUsers.getPassword());
-                newUsersDTO.setVerify_email(true);
-                newUsersDTO.setUser_id(dateId + "calc" + hourId + "mt");
-                newUsersDTO.setConnection("Username-Password-Authentication");
+                NewUsersDTO newUsersDTO = getNewUsersDTO(dataUsers, dateId, hourId);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
                 String token = getToken().getAccess_token();
 
-                headers.add("Authorization", "Bearer " + token );
+                headers.add(HEADER_NAME, HEADER_VALUE + token );
 
                 HttpEntity<Object> entity = new HttpEntity<>(newUsersDTO, headers);
                 String uri = uri_get_users;
@@ -316,26 +320,16 @@ public class ControllerAdmin {
         if (Objects.equals(type, "update")) {
             try {
                 //Crea registro en AUTH0
-
                 String authid = dataUsers.getAuthid();
 
-                EditUsersDTO editUsersDTO = new EditUsersDTO();
-                editUsersDTO.setName(dataUsers.getName());
-                editUsersDTO.setNickname(dataUsers.getLogin());
-                editUsersDTO.setPassword(dataUsers.getPassword());
-                editUsersDTO.setConnection("Username-Password-Authentication");
-                if (Objects.equals(dataUsers.getState(), "Activo")) {
-                    editUsersDTO.setBlocked(false);
-                } else {
-                    editUsersDTO.setBlocked(true);
-                }
+                EditUsersDTO editUsersDTO = getEditUsersDTO(dataUsers);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
                 String token = getToken().getAccess_token();
 
-                headers.add("Authorization", "Bearer " + token );
+                headers.add(HEADER_NAME, HEADER_VALUE + token );
 
                 HttpEntity<Object> entity = new HttpEntity<>(editUsersDTO, headers);
                 String uri = uri_get_users + "/" + authid;
@@ -357,6 +351,34 @@ public class ControllerAdmin {
 
         return "dataUsers";
 
+    }
+
+    @NotNull
+    private static EditUsersDTO getEditUsersDTO(@NotNull DataUsers dataUsers) {
+        EditUsersDTO editUsersDTO = new EditUsersDTO();
+        editUsersDTO.setName(dataUsers.getName());
+        editUsersDTO.setNickname(dataUsers.getLogin());
+        editUsersDTO.setPassword(dataUsers.getPassword());
+        editUsersDTO.setConnection(CONECT_BD_AUTH0);
+        if (Objects.equals(dataUsers.getState(), datauser_default_state)) {
+            editUsersDTO.setBlocked(false);
+        } else {
+            editUsersDTO.setBlocked(true);
+        }
+        return editUsersDTO;
+    }
+
+    private static @NotNull NewUsersDTO getNewUsersDTO(@NotNull DataUsers dataUsers, String dateId, String hourId) {
+        NewUsersDTO newUsersDTO = new NewUsersDTO();
+        newUsersDTO.setName(dataUsers.getName());
+        newUsersDTO.setEmail(dataUsers.getEmail());
+        newUsersDTO.setNickname(dataUsers.getLogin());
+        newUsersDTO.setUsername(dataUsers.getLogin());
+        newUsersDTO.setPassword(dataUsers.getPassword());
+        newUsersDTO.setVerify_email(true);
+        newUsersDTO.setUser_id(dateId + "calc" + hourId + "mt");
+        newUsersDTO.setConnection(CONECT_BD_AUTH0);
+        return newUsersDTO;
     }
 
     @RequestMapping("/deleteUsers")

@@ -29,7 +29,6 @@ public class LogoutHandler extends SecurityContextLogoutHandler {
         this.clientRegistrationRepository = clientRegistrationRepository;
     }
 
-
     @Override
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
 

@@ -20,7 +20,7 @@
                 <th class="text-center" scope="col">Cantidad</th>
                 <th class="text-center" scope="col">VIP</th>
                 <th scope="col">Distribuidor</th>
-                <th scope="col">Consumidor</th>
+                <!--<th scope="col">Consumidor</th>-->
                 <th scope="col">Publico</th>
             </tr>
             </thead>
@@ -33,7 +33,7 @@
                 <td align="center" th:text="${dataTempList.cant} > 1 ? 'Más de ' + ${dataTempList.cant} + ' Unidades': ${dataTempList.cant} + ' Unidad'"></td>
                 <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.vip, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.distri, 0, 'COMMA', 2, 'POINT')}"></td>
-                <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.consu, 0, 'COMMA', 2, 'POINT')}"></td>
+                <!--<td th:text="'$' + ${#numbers.formatDecimal(dataTempList.consu, 0, 'COMMA', 2, 'POINT')}"></td>-->
                 <td th:text="'$' + ${#numbers.formatDecimal(dataTempList.pub, 0, 'COMMA', 2, 'POINT')}"></td>
             </tr>
             </tbody>

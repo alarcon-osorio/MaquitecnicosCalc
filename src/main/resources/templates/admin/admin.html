@@ -5,7 +5,7 @@
 <div class="container mt-4 vj-destacados">
     <div class="row">
         <div class="col col-md-12 text-right mb-4" sec:authorize="!isAuthenticated()">
-            <a th:href="@{/calc}" class="btn btn-outline-success">Iniciar Sesion</a>
+            <a th:href="@{/calc}" class="btn btn-outline-success">Iniciar Sesión <i class="fas fa-user"></i></a>
         </div>
         <div class="col col-md-12 text-right mb-4" sec:authorize="isAuthenticated()">
             <div>
@@ -14,8 +14,8 @@
                 <p class="owner-subtext" th:text="${profile.get('email')}"></p>
             </div>
             <div>
-                <a th:href="@{/calc}" class="btn btn-outline-info">Home</a>
-                <a th:href="@{/logout}" class="btn btn-outline-warning">Cerrar Sesión</a>
+                <a th:href="@{/calc}" class="btn btn-outline-info">Inicio <i class="fas fa-home"></i></a>
+                <a th:href="@{/logout}" class="btn btn-outline-warning">Cerrar Sesión <i class="fas fa-door-open"></i></a>
             </div>
         </div>
     </div>
