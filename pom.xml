@@ -19,8 +19,9 @@ http://maven.apache.org/POM/4.0.0 ">
 		<java.version>8</java.version>
 	</properties>
 
-	<!--Despliegue -->
+	<!--Despliegue 
 	<packaging>war</packaging>
+	-->
 
 	<dependencies>
 		<dependency>
