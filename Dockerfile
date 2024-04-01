@@ -1,4 +1,4 @@
-FROM oven/bun
+FROM openjdk:11
 WORKDIR /app
 COPY target/calc-0.0.1-SNAPSHOT.jar calc-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
