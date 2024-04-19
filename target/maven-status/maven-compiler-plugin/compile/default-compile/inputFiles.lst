@@ -1,44 +1,45 @@
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataProduct.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataUsers.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataCastResult.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataCalcDTO.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataTokenResponse.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataProduct.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/ControllerAdmin.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/RestControllerApis.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataCalc.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/EditUsersDTO.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/CalcApplication.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/ControllerCalc.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/auth0/LogoutHandler.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataRegistry.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataFeatures.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/NewUsersDTO.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataUsers.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataTrm.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataCalc.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataTemp.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataRegistry.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataFeatures.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataClients.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataStatic.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataClients.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataCalcJoin.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataTemp.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataType.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataUsers.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataToken.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/exporter/ExcelExportUnlisted.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataResult.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataStatic.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/UsersDTO.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataClients.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataFeatures.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataRegistry.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/HomeController.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataProduct.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataStatic.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataTemp.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/config/AuthConfig.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataCalc.java
-/Users/macjeison/Documents/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataTrm.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/UsersDTO.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataStatic.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataCalc.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/HomeController.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataCalc.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataTemp.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataTrm.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/CalcApplication.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataUsers.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/RestControllerApis.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataTokenResponse.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataUsers.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataCastResult.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/constants/values.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/auth0/LogoutHandler.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/NewUsersDTO.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataType.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataProduct.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/ControllerCalc.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataToken.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataClients.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataUsers.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataTrm.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataCalcJoin.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataProduct.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/controller/ControllerAdmin.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataClients.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataStatic.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataFeatures.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/EditUsersDTO.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataRegistry.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataTemp.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataCalc.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataFeatures.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataRegistry.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/config/AuthConfig.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataStatic.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/entity/DataClients.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataFeatures.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataRegistry.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/repository/RepositoryDataTemp.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/exporter/ExcelExportUnlisted.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataCalcDTO.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/dto/DataResult.java
+/Volumes/MacOS - Datos/Desarrollos/MaquitecnicosCalc/src/main/java/com/server/calc/service/ServiceDataProduct.java

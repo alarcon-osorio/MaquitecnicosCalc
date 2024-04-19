@@ -16,8 +16,8 @@ com/server/calc/dto/DataCastResult.class
 com/server/calc/entity/DataCalc.class
 com/server/calc/config/AuthConfig.class
 com/server/calc/service/ServiceDataUsers.class
-com/server/calc/entity/DataType.class
 com/server/calc/CalcApplication.class
+com/server/calc/entity/DataType.class
 com/server/calc/service/ServiceDataRegistry.class
 com/server/calc/dto/DataCalcJoin.class
 com/server/calc/repository/RepositoryDataTemp.class
@@ -36,6 +36,7 @@ com/server/calc/dto/NewUsersDTO.class
 com/server/calc/repository/RepositoryDataClients.class
 com/server/calc/entity/DataClients.class
 com/server/calc/service/ServiceDataTrm.class
+com/server/calc/constants/values.class
 com/server/calc/controller/ControllerAdmin.class
 com/server/calc/dto/EditUsersDTO.class
 com/server/calc/repository/RepositoryDataStatic.class
